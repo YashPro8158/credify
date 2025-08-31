@@ -690,7 +690,7 @@ That’s why we provide fast, simple, and reliable loan solutions — with no hi
         }
 
 
-    const API_BASE = "https://credify-gnq2.onrender.com";
+    const API_BASE = import.meta.env.VITE_API_BASE_URL;
 
 document.getElementById("contactForm").addEventListener("submit", async (e) => {
   e.preventDefault();
