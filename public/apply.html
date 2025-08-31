@@ -544,9 +544,10 @@ async function submitApplication() {
         loanAmount: document.getElementById('loanAmount').value,
         city: document.getElementById('city').value,
     };
+const BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
     try {
-        const res = await fetch("https://credify-gnq2.onrender.com/api/apply", {
+        const res = await fetch("${BASE_URL}api/apply", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(data)
