@@ -1,0 +1,480 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Credify Car Loan EMI Calculator</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="shortcut icon" href="logo.png" type="image/x-icon">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+        body { font-family: 'Inter', sans-serif; }
+        
+        .gradient-bg {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+        
+        .card-shadow {
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+        }
+        
+        .input-focus:focus {
+            transform: translateY(-1px);
+            box-shadow: 0 10px 25px -5px rgba(102, 126, 234, 0.25);
+        }
+        
+        .result-card {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+        }
+        
+        .chart-container {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+        }
+           /* 3D Navigation Button Styles */
+        .nav-btn {
+            position: relative;
+            background: linear-gradient(145deg, #ffffff, #e6e6e6);
+            border: none;
+            border-radius: 12px;
+            padding: 12px 24px;
+            font-weight: 600;
+            color: #4a5568;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 
+                8px 8px 16px rgba(0, 0, 0, 0.1),
+                -8px -8px 16px rgba(255, 255, 255, 0.8),
+                inset 0 0 0 rgba(255, 255, 255, 0);
+            transform: translateZ(0);
+        }
+        
+        .nav-btn:hover {
+            transform: translateY(-3px) scale(1.05);
+            box-shadow: 
+                12px 12px 24px rgba(0, 0, 0, 0.15),
+                -12px -12px 24px rgba(255, 255, 255, 0.9),
+                inset 2px 2px 4px rgba(255, 255, 255, 0.3);
+            background: linear-gradient(145deg, #f8f9fa, #e9ecef);
+            color: #2d3748;
+        }
+        
+        .nav-btn:active {
+            transform: translateY(-1px) scale(1.02);
+            box-shadow: 
+                4px 4px 8px rgba(0, 0, 0, 0.2),
+                -4px -4px 8px rgba(255, 255, 255, 0.7),
+                inset 4px 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        
+        .nav-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            border-radius: 12px;
+            background: linear-gradient(145deg, transparent, rgba(255, 255, 255, 0.1));
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        
+        .nav-btn:hover::before {
+            opacity: 1;
+        }
+        
+        .nav-btn i {
+            margin-right: 8px;
+            font-size: 16px;
+        }
+        
+        /* Logo styling */
+        .logo {
+            background: linear-gradient(145deg, #667eea, #764ba2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            font-weight: 800;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+        }
+    </style>
+</head>
+<body class="min-h-screen gradient-bg">
+    <div class="container mx-auto px-4 py-8">
+        <!-- Navigation Bar -->
+    <nav class="bg-white shadow-lg sticky top-0 z-50">
+        <div class="container mx-auto px-4 py-3">
+            <div class="flex items-center justify-between">
+                <!-- Logo -->
+                <div class="flex-shrink-0 logosec" style="display: flex; align-items: center;">
+                        <img src="logo-bg.png" alt="logo" width="10%">
+                        <h1 class="text-2xl font-bold text-indigo-600">Credify</h1>
+                    </div>
+                
+                <!-- Navigation Buttons -->
+                <div class="flex items-center space-x-4">
+                    <button class="nav-btn" onclick="goToHome()">
+                        <i>🏠</i>
+                        Home
+                    </button>
+                    <button class="nav-btn" onclick="goToContact()">
+                        <i>📞</i>
+                        Contact
+                    </button>
+                </div>
+            </div>
+        </div>
+    </nav>
+<!-- Header -->
+        <div class="text-center mb-8">
+            <h1 class="text-4xl font-bold text-white mb-2">🚗 Credify Car Loan Calculator</h1>
+            <p class="text-blue-100 text-lg">Calculate your monthly EMI and plan your dream car purchase</p>
+        </div>
+        <div class="max-w-6xl mx-auto grid lg:grid-cols-2 gap-8">
+            <!-- Calculator Form -->
+            <div class="bg-white rounded-2xl p-8 card-shadow">
+                <h2 class="text-2xl font-semibold text-gray-800 mb-6 flex items-center">
+                    <span class="bg-blue-100 p-2 rounded-lg mr-3">💰</span>
+                    Loan Details
+                </h2>
+                
+                <form id="loanForm" class="space-y-6">
+                    <!-- Car Price -->
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Car Price (₹)</label>
+                        <input type="number" id="carPrice" value="800000" 
+                               class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent input-focus transition-all duration-200"
+                               placeholder="Enter car price">
+                    </div>
+
+                    <!-- Down Payment -->
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Down Payment (₹)</label>
+                        <input type="number" id="downPayment" value="200000"
+                               class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent input-focus transition-all duration-200"
+                               placeholder="Enter down payment">
+                        <div class="mt-2">
+                            <span class="text-sm text-gray-600">Percentage: </span>
+                            <span id="downPaymentPercent" class="text-sm font-medium text-blue-600">25%</span>
+                        </div>
+                    </div>
+
+                    <!-- Loan Amount (Auto-calculated) -->
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Loan Amount (₹)</label>
+                        <input type="number" id="loanAmount" value="600000" readonly
+                               class="w-full px-4 py-3 border border-gray-200 rounded-lg bg-gray-50 text-gray-700">
+                    </div>
+
+                    <!-- Interest Rate -->
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Interest Rate (% per annum)</label>
+                        <input type="number" id="interestRate" value="8.5" step="0.1"
+                               class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent input-focus transition-all duration-200"
+                               placeholder="Enter interest rate">
+                    </div>
+
+                    <!-- Loan Tenure -->
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Loan Tenure</label>
+                        <select id="loanTenure" 
+                                class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent input-focus transition-all duration-200">
+                            <option value="12">1 Year (12 months)</option>
+                            <option value="24">2 Years (24 months)</option>
+                            <option value="36">3 Years (36 months)</option>
+                            <option value="48">4 Years (48 months)</option>
+                            <option value="60" selected>5 Years (60 months)</option>
+                            <option value="72">6 Years (72 months)</option>
+                            <option value="84">7 Years (84 months)</option>
+                        </select>
+                    </div>
+
+                    <button type="submit" 
+                            class="w-full bg-gradient-to-r from-blue-600 to-purple-600 text-white py-3 px-6 rounded-lg font-semibold hover:from-blue-700 hover:to-purple-700 transform hover:scale-105 transition-all duration-200 shadow-lg">
+                        Calculate EMI
+                    </button>
+                </form>
+            </div>
+
+            <!-- Results -->
+            <div class="space-y-6">
+                <!-- EMI Result Card -->
+                <div class="bg-white rounded-2xl p-8 card-shadow">
+                    <h3 class="text-xl font-semibold text-gray-800 mb-6 flex items-center">
+                        <span class="bg-green-100 p-2 rounded-lg mr-3">📊</span>
+                        EMI Calculation Results
+                    </h3>
+                    
+                    <div class="grid grid-cols-1 gap-4">
+                        <div class="result-card text-white p-6 rounded-xl">
+                            <div class="text-center">
+                                <p class="text-sm opacity-90 mb-1">Monthly EMI</p>
+                                <p class="text-3xl font-bold" id="monthlyEMI">₹12,455</p>
+                            </div>
+                        </div>
+                        
+                        <div class="grid grid-cols-2 gap-4">
+                            <div class="bg-gray-50 p-4 rounded-lg text-center">
+                                <p class="text-sm text-gray-600 mb-1">Total Interest</p>
+                                <p class="text-xl font-semibold text-gray-800" id="totalInterest">₹1,47,300</p>
+                            </div>
+                            <div class="bg-gray-50 p-4 rounded-lg text-center">
+                                <p class="text-sm text-gray-600 mb-1">Total Amount</p>
+                                <p class="text-xl font-semibold text-gray-800" id="totalAmount">₹7,47,300</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Payment Breakdown Chart -->
+                <div class="bg-white rounded-2xl p-8 card-shadow">
+                    <h3 class="text-xl font-semibold text-gray-800 mb-6 flex items-center">
+                        <span class="bg-yellow-100 p-2 rounded-lg mr-3">📈</span>
+                        Payment Breakdown
+                    </h3>
+                    
+                    <div class="chart-container text-white p-6 rounded-xl">
+                        <div class="grid grid-cols-2 gap-6">
+                            <div class="text-center">
+                                <div class="text-4xl mb-2">🏦</div>
+                                <p class="text-sm opacity-90">Principal Amount</p>
+                                <p class="text-2xl font-bold" id="principalChart">₹6,00,000</p>
+                                <p class="text-sm opacity-75" id="principalPercent">80.3%</p>
+                            </div>
+                            <div class="text-center">
+                                <div class="text-4xl mb-2">💸</div>
+                                <p class="text-sm opacity-90">Interest Amount</p>
+                                <p class="text-2xl font-bold" id="interestChart">₹1,47,300</p>
+                                <p class="text-sm opacity-75" id="interestPercent">19.7%</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Quick Tips -->
+                <div class="bg-white rounded-2xl p-6 card-shadow">
+                    <h3 class="text-lg font-semibold text-gray-800 mb-4 flex items-center">
+                        <span class="bg-blue-100 p-2 rounded-lg mr-3">💡</span>
+                        Smart Tips
+                    </h3>
+                    <ul class="space-y-2 text-sm text-gray-600">
+                        <li class="flex items-start">
+                            <span class="text-green-500 mr-2">✓</span>
+                            Higher down payment reduces EMI and total interest
+                        </li>
+                        <li class="flex items-start">
+                            <span class="text-green-500 mr-2">✓</span>
+                            Shorter tenure means higher EMI but lower total cost
+                        </li>
+                        <li class="flex items-start">
+                            <span class="text-green-500 mr-2">✓</span>
+                            Compare rates from multiple lenders
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Amortization Schedule -->
+        <div class="max-w-6xl mx-auto mt-8">
+            <div class="bg-white rounded-2xl p-8 card-shadow">
+                <h3 class="text-xl font-semibold text-gray-800 mb-6 flex items-center">
+                    <span class="bg-purple-100 p-2 rounded-lg mr-3">📋</span>
+                    Payment Schedule (First 12 Months)
+                </h3>
+                
+                <div class="overflow-x-auto">
+                    <table class="w-full text-sm">
+                        <thead>
+                            <tr class="bg-gray-50">
+                                <th class="px-4 py-3 text-left font-medium text-gray-700">Month</th>
+                                <th class="px-4 py-3 text-right font-medium text-gray-700">EMI</th>
+                                <th class="px-4 py-3 text-right font-medium text-gray-700">Principal</th>
+                                <th class="px-4 py-3 text-right font-medium text-gray-700">Interest</th>
+                                <th class="px-4 py-3 text-right font-medium text-gray-700">Balance</th>
+                            </tr>
+                        </thead>
+                        <tbody id="scheduleTable">
+                            <!-- Schedule will be populated by JavaScript -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function formatCurrency(amount) {
+            return new Intl.NumberFormat('en-IN', {
+                style: 'currency',
+                currency: 'INR',
+                maximumFractionDigits: 0
+            }).format(amount);
+        }
+
+        function formatNumber(num) {
+            return new Intl.NumberFormat('en-IN').format(Math.round(num));
+        }
+
+        function calculateEMI() {
+            const carPrice = parseFloat(document.getElementById('carPrice').value) || 0;
+            const downPayment = parseFloat(document.getElementById('downPayment').value) || 0;
+            const loanAmount = carPrice - downPayment;
+            const annualRate = parseFloat(document.getElementById('interestRate').value) || 0;
+            const tenure = parseInt(document.getElementById('loanTenure').value) || 60;
+
+            // Update loan amount
+            document.getElementById('loanAmount').value = loanAmount;
+            
+            // Update down payment percentage
+            const downPaymentPercent = carPrice > 0 ? ((downPayment / carPrice) * 100).toFixed(1) : 0;
+            document.getElementById('downPaymentPercent').textContent = downPaymentPercent + '%';
+
+            if (loanAmount <= 0 || annualRate <= 0 || tenure <= 0) {
+                return;
+            }
+
+            // EMI Calculation using formula: EMI = P × r × (1 + r)^n / ((1 + r)^n - 1)
+            const monthlyRate = annualRate / (12 * 100);
+            const emi = (loanAmount * monthlyRate * Math.pow(1 + monthlyRate, tenure)) / 
+                       (Math.pow(1 + monthlyRate, tenure) - 1);
+            
+            const totalAmount = emi * tenure;
+            const totalInterest = totalAmount - loanAmount;
+
+            // Update results
+            document.getElementById('monthlyEMI').textContent = formatCurrency(emi);
+            document.getElementById('totalInterest').textContent = formatCurrency(totalInterest);
+            document.getElementById('totalAmount').textContent = formatCurrency(totalAmount);
+            document.getElementById('principalChart').textContent = formatCurrency(loanAmount);
+            document.getElementById('interestChart').textContent = formatCurrency(totalInterest);
+            
+            // Update percentages
+            const principalPercent = ((loanAmount / totalAmount) * 100).toFixed(1);
+            const interestPercent = ((totalInterest / totalAmount) * 100).toFixed(1);
+            document.getElementById('principalPercent').textContent = principalPercent + '%';
+            document.getElementById('interestPercent').textContent = interestPercent + '%';
+
+            // Generate amortization schedule for first 12 months
+            generateSchedule(loanAmount, emi, monthlyRate, Math.min(12, tenure));
+        }
+
+        function generateSchedule(principal, emi, monthlyRate, months) {
+            const scheduleTable = document.getElementById('scheduleTable');
+            scheduleTable.innerHTML = '';
+            
+            let balance = principal;
+            
+            for (let month = 1; month <= months; month++) {
+                const interestPayment = balance * monthlyRate;
+                const principalPayment = emi - interestPayment;
+                balance -= principalPayment;
+                
+                const row = document.createElement('tr');
+                row.className = month % 2 === 0 ? 'bg-gray-50' : '';
+                row.innerHTML = `
+                    <td class="px-4 py-3 font-medium">${month}</td>
+                    <td class="px-4 py-3 text-right">₹${formatNumber(emi)}</td>
+                    <td class="px-4 py-3 text-right text-green-600">₹${formatNumber(principalPayment)}</td>
+                    <td class="px-4 py-3 text-right text-red-600">₹${formatNumber(interestPayment)}</td>
+                    <td class="px-4 py-3 text-right font-medium">₹${formatNumber(Math.max(0, balance))}</td>
+                `;
+                scheduleTable.appendChild(row);
+            }
+        }
+
+        // Event listeners
+        document.getElementById('loanForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            calculateEMI(); 
+        });
+
+        // Real-time calculation on input change
+        ['carPrice', 'downPayment', 'interestRate', 'loanTenure'].forEach(id => {
+            document.getElementById(id).addEventListener('input', calculateEMI);
+        });
+
+        // Initial calculation
+        calculateEMI();
+
+
+           function goToHome() {
+            // Redirect to home page
+            window.location.href = 'index.html';
+
+        }
+
+        function goToContact() {
+            // Create and show contact modal
+            const modal = document.createElement('div');
+            modal.className = 'fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50';
+            modal.innerHTML = `
+                <div class="bg-white rounded-lg shadow-xl p-8 max-w-md mx-4 transform transition-all">
+                    <div class="text-center mb-6">
+                        <div class="text-4xl mb-4">📞</div>
+                        <h2 class="text-2xl font-bold text-gray-800">Contact Us</h2>
+                    </div>
+                    
+                    <div class="space-y-4">
+                        <div class="flex items-center space-x-3">
+                            <div class="text-xl">📱</div>
+                            <div>
+                                <p class="font-semibold">Phone</p>
+                                <p class="text-gray-600">+91 93107 68239</p>
+                            </div>
+                        </div>
+                        
+                        <div class="flex items-center space-x-3">
+                            <div class="text-xl">✉️</div>
+                            <div>   
+                                <p class="font-semibold">Email</p>
+                                <p class="text-gray-600">infocredify.pyt@gmail.com</p>
+                            </div>
+                        </div>
+                        
+                        <div class="flex items-center space-x-3">
+                            <div class="text-xl">🏢</div>
+                            <div>
+                                <p class="font-semibold">Office</p>
+                                <p class="text-gray-600">DLF CORPORATE TOWERS, Complex Market SHIVAJI MARG, Najafgarh Rd, Karampura Industrial Area Delhi, India 110015</p>
+                            </div>
+                        </div>
+                        
+                        <div class="flex items-center space-x-3">
+                            <div class="text-xl">⏰</div>
+                            <div>
+                                <p class="font-semibold">Working Hours</p>
+                                <p class="text-gray-600">Mon-Sat: 9:00 AM - 6:00 PM</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="mt-6 text-center">
+                        <button onclick="closeContactModal()" class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-lg font-semibold">
+                            Close
+                        </button>
+                    </div>
+                </div>
+            `;
+            
+            document.body.appendChild(modal);
+            
+            // Add click outside to close
+            modal.addEventListener('click', function(e) {
+                if (e.target === modal) {
+                    closeContactModal();
+                }
+            });
+        }
+
+        function closeContactModal() {
+            const modal = document.querySelector('.fixed.inset-0');
+            if (modal) {
+                modal.remove();
+            }
+        }
+
+        
+    </script>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'97760d14867a38b4',t:'MTc1NjU3NTM5NC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>

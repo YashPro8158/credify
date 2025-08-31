@@ -1,0 +1,667 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Apply for Loan - Quick & Easy Application</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="shortcut icon" href="logo.png" type="image/x-icon">
+    <style>
+        .gradient-bg {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+        .form-step {
+            display: none;
+        }
+        .form-step.active {
+            display: block;
+        }
+        .loan-card {
+            transition: all 0.3s ease;
+        }
+        .loan-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+        }
+        .loan-card.selected {
+            border-color: #667eea;
+            background-color: #f0f4ff;
+        }
+        
+        /* 3D Navigation Button Styles */
+        .nav-btn {
+            position: relative;
+            background: linear-gradient(145deg, #ffffff, #e6e6e6);
+            border: none;
+            border-radius: 12px;
+            padding: 12px 24px;
+            font-weight: 600;
+            color: #4a5568;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 
+                8px 8px 16px rgba(0, 0, 0, 0.1),
+                -8px -8px 16px rgba(255, 255, 255, 0.8),
+                inset 0 0 0 rgba(255, 255, 255, 0);
+            transform: translateZ(0);
+        }
+        
+        .nav-btn:hover {
+            transform: translateY(-3px) scale(1.05);
+            box-shadow: 
+                12px 12px 24px rgba(0, 0, 0, 0.15),
+                -12px -12px 24px rgba(255, 255, 255, 0.9),
+                inset 2px 2px 4px rgba(255, 255, 255, 0.3);
+            background: linear-gradient(145deg, #f8f9fa, #e9ecef);
+            color: #2d3748;
+        }
+        
+        .nav-btn:active {
+            transform: translateY(-1px) scale(1.02);
+            box-shadow: 
+                4px 4px 8px rgba(0, 0, 0, 0.2),
+                -4px -4px 8px rgba(255, 255, 255, 0.7),
+                inset 4px 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        
+        .nav-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            border-radius: 12px;
+            background: linear-gradient(145deg, transparent, rgba(255, 255, 255, 0.1));
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        
+        .nav-btn:hover::before {
+            opacity: 1;
+        }
+        
+        .nav-btn i {
+            margin-right: 8px;
+            font-size: 16px;
+        }
+        
+        /* Logo styling */
+        .logo {
+            background: linear-gradient(145deg, #667eea, #764ba2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            font-weight: 800;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+        }
+    </style>
+</head>
+<body class="bg-gray-50 min-h-screen">
+    <!-- Navigation Bar -->
+    <nav class="bg-white shadow-lg sticky top-0 z-50">
+        <div class="container mx-auto px-4 py-3">
+            <div class="flex items-center justify-between">
+                <!-- Logo -->
+               <div class="flex-shrink-0 logosec" style="display: flex; align-items: center;">
+                        <img src="logo-bg.png" alt="logo" width="10%">
+                        <h1 class="text-2xl font-bold text-indigo-600">Credify</h1>
+                    </div>
+                
+                <!-- Navigation Buttons -->
+                <div class="flex items-center space-x-4">
+                    <button class="nav-btn" onclick="goToHome()">
+                        <i>🏠</i>
+                        Home
+                    </button>
+                    <button class="nav-btn" onclick="goToContact()">
+                        <i>📞</i>
+                        Contact
+                    </button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Header -->
+    <header class="gradient-bg text-white py-8">
+        <div class="container mx-auto px-4">
+            <h1 class="text-3xl font-bold text-center">Quick Loan Application</h1>
+            <p class="text-center mt-2 text-blue-100">Get approved in minutes - Choose your loan type below</p>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <div class="container mx-auto px-4 py-8 max-w-4xl">
+        <!-- Progress Bar -->
+        <div class="mb-8">
+            <div class="flex items-center justify-center space-x-4 mb-4">
+                <div class="flex items-center">
+                    <div id="step1-indicator" class="w-8 h-8 rounded-full bg-blue-600 text-white flex items-center justify-center text-sm font-bold">1</div>
+                    <span class="ml-2 text-sm font-medium text-gray-700">Loan Type</span>
+                </div>
+                <div class="w-16 h-1 bg-gray-300" id="progress-bar-1"></div>
+                <div class="flex items-center">
+                    <div id="step2-indicator" class="w-8 h-8 rounded-full bg-gray-300 text-gray-600 flex items-center justify-center text-sm font-bold">2</div>
+                    <span class="ml-2 text-sm font-medium text-gray-500">Personal Details</span>
+                </div>
+                <div class="w-16 h-1 bg-gray-300" id="progress-bar-2"></div>
+                <div class="flex items-center">
+                    <div id="step3-indicator" class="w-8 h-8 rounded-full bg-gray-300 text-gray-600 flex items-center justify-center text-sm font-bold">3</div>
+                    <span class="ml-2 text-sm font-medium text-gray-500">Submit</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Step 1: Loan Type Selection -->
+        <div id="step1" class="form-step active">
+            <div class="bg-white rounded-lg shadow-lg p-6">
+                <h2 class="text-2xl font-bold text-gray-800 mb-6 text-center">Select Your Loan Type</h2>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-6">
+                    <!-- Personal Loan -->
+                    <div class="loan-card border-2 border-gray-200 rounded-lg p-4 cursor-pointer" onclick="selectLoan('personal')">
+                        <div class="text-center">
+                            <div class="text-3xl mb-2">👤</div>
+                            <h3 class="font-semibold text-gray-800">Personal Loan</h3>
+                            <p class="text-sm text-gray-600 mt-1">For personal expenses</p>
+                        </div>
+                    </div>
+
+                    <!-- Business Loan -->
+                    <div class="loan-card border-2 border-gray-200 rounded-lg p-4 cursor-pointer" onclick="selectLoan('business')">
+                        <div class="text-center">
+                            <div class="text-3xl mb-2">🏢</div>
+                            <h3 class="font-semibold text-gray-800">Business Loan</h3>
+                            <p class="text-sm text-gray-600 mt-1">Grow your business</p>
+                        </div>
+                    </div>
+
+                    <!-- Home Loan -->
+                    <div class="loan-card border-2 border-gray-200 rounded-lg p-4 cursor-pointer" onclick="selectLoan('home')">
+                        <div class="text-center">
+                            <div class="text-3xl mb-2">🏠</div>
+                            <h3 class="font-semibold text-gray-800">Home Loan</h3>
+                            <p class="text-sm text-gray-600 mt-1">Buy your dream home</p>
+                        </div>
+                    </div>
+
+                    <!-- LAP (Loan Against Property) -->
+                    <div class="loan-card border-2 border-gray-200 rounded-lg p-4 cursor-pointer" onclick="selectLoan('lap')">
+                        <div class="text-center">
+                            <div class="text-3xl mb-2">🏘️</div>
+                            <h3 class="font-semibold text-gray-800">LAP</h3>
+                            <p class="text-sm text-gray-600 mt-1">Loan Against Property</p>
+                        </div>
+                    </div>
+
+                    <!-- Used Car Loan -->
+                    <div class="loan-card border-2 border-gray-200 rounded-lg p-4 cursor-pointer" onclick="selectLoan('used-car')">
+                        <div class="text-center">
+                            <div class="text-3xl mb-2">🚗</div>
+                            <h3 class="font-semibold text-gray-800">Used Car Loan</h3>
+                            <p class="text-sm text-gray-600 mt-1">Pre-owned vehicles</p>
+                        </div>
+                    </div>
+
+                    <!-- New Car Loan -->
+                    <div class="loan-card border-2 border-gray-200 rounded-lg p-4 cursor-pointer" onclick="selectLoan('new-car')">
+                        <div class="text-center">
+                            <div class="text-3xl mb-2">🚙</div>
+                            <h3 class="font-semibold text-gray-800">New Car Loan</h3>
+                            <p class="text-sm text-gray-600 mt-1">Brand new vehicles</p>
+                        </div>
+                    </div>
+
+                    <!-- RTO Insurance -->
+                    <div class="loan-card border-2 border-gray-200 rounded-lg p-4 cursor-pointer" onclick="selectLoan('rto-insurance')">
+                        <div class="text-center">
+                            <div class="text-3xl mb-2">🛡️</div>
+                            <h3 class="font-semibold text-gray-800">RTO Insurance</h3>
+                            <p class="text-sm text-gray-600 mt-1">Vehicle insurance</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="text-center">
+                    <button id="nextStep1" class="bg-blue-600 hover:bg-blue-700 text-white px-8 py-3 rounded-lg font-semibold disabled:bg-gray-400 disabled:cursor-not-allowed" disabled onclick="goToStep(2)">
+                        Continue to Personal Details →
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Step 2: Personal Details -->
+        <div id="step2" class="form-step">
+            <div class="bg-white rounded-lg shadow-lg p-6">
+                <h2 class="text-2xl font-bold text-gray-800 mb-6 text-center">Personal Information</h2>
+                
+                <form id="loanForm" class="space-y-4">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Full Name *</label>
+                            <input type="text" id="fullName" required class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500" placeholder="Enter your full name">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Mobile Number *</label>
+                            <input type="tel" id="mobile" required class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500" placeholder="Enter 10-digit mobile number">
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Email Address *</label>
+                            <input type="email" id="email" required class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500" placeholder="Enter your email">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Date of Birth *</label>
+                            <input type="date" id="dob" required class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Monthly Income *</label>
+                            <select id="income" required class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+                                <option value="">Select income range</option>
+                                <option value="below-25k">Below ₹25,000</option>
+                                <option value="25k-50k">₹25,000 - ₹50,000</option>
+                                <option value="50k-1l">₹50,000 - ₹1,00,000</option>
+                                <option value="1l-2l">₹1,00,000 - ₹2,00,000</option>
+                                <option value="above-2l">Above ₹2,00,000</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Employment Type *</label>
+                            <select id="employment" required class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+                                <option value="">Select employment type</option>
+                                <option value="salaried">Salaried</option>
+                                <option value="self-employed">Self Employed</option>
+                                <option value="business">Business Owner</option>
+                                <option value="freelancer">Freelancer</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div id="loanAmountSection">
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Loan Amount Required *</label>
+                        <input type="number" id="loanAmount" required class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500" placeholder="Enter amount in ₹">
+                    </div>
+
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">City *</label>
+                        <input type="text" id="city" required class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500" placeholder="Enter your city">
+                    </div>
+                </form>
+
+                <div class="flex justify-between mt-6">
+                    <button onclick="goToStep(1)" class="bg-gray-500 hover:bg-gray-600 text-white px-6 py-2 rounded-lg font-semibold">
+                        ← Back
+                    </button>
+                    <button onclick="goToStep(3)" class="bg-blue-600 hover:bg-blue-700 text-white px-8 py-3 rounded-lg font-semibold">
+                        Review Application →
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Step 3: Review & Submit -->
+        <div id="step3" class="form-step">
+            <div class="bg-white rounded-lg shadow-lg p-6">
+                <h2 class="text-2xl font-bold text-gray-800 mb-6 text-center">Review Your Application</h2>
+                
+                <div id="reviewContent" class="space-y-4 mb-6">
+                    <!-- Review content will be populated by JavaScript -->
+                </div>
+
+               
+
+                <div class="flex justify-between">
+                    <button onclick="goToStep(2)" class="bg-gray-500 hover:bg-gray-600 text-white px-6 py-2 rounded-lg font-semibold">
+                        ← Back to Edit
+                    </button>
+                    <button onclick="submitApplication()" class="bg-green-600 hover:bg-green-700 text-white px-8 py-3 rounded-lg font-semibold">
+                        Submit Application 🚀
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Success Message -->
+        <div id="successMessage" class="form-step">
+            <div class="bg-white rounded-lg shadow-lg p-8 text-center">
+                <div class="text-6xl mb-4">✅</div>
+                <h2 class="text-3xl font-bold text-green-600 mb-4">Application Submitted Successfully!</h2>
+                <p class="text-gray-600 mb-6">Thank you for your loan application. Our team will review your application and contact you within 24-48 hours.</p>
+                <div class="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-6">
+                    <p class="text-sm text-blue-800"><strong>Reference ID:</strong> <span id="referenceId"></span></p>
+                </div>
+                <button onclick="startNewApplication()" class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg font-semibold">
+                    Submit Another Application
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let selectedLoanType = '';
+        let currentStep = 1;
+
+        function selectLoan(loanType) {
+            // Remove selection from all cards
+            document.querySelectorAll('.loan-card').forEach(card => {
+                card.classList.remove('selected');
+            });
+            
+            // Add selection to clicked card
+            event.currentTarget.classList.add('selected');
+            selectedLoanType = loanType;
+            
+            // Enable next button
+            document.getElementById('nextStep1').disabled = false;
+            
+            // Update loan amount label based on type
+            const loanAmountSection = document.getElementById('loanAmountSection');
+            const loanAmountInput = document.getElementById('loanAmount');
+            
+            if (loanType === 'rto-insurance') {
+                loanAmountSection.querySelector('label').textContent = 'Insurance Premium Amount *';
+                loanAmountInput.placeholder = 'Enter premium amount in ₹';
+            } else {
+                loanAmountSection.querySelector('label').textContent = 'Loan Amount Required *';
+                loanAmountInput.placeholder = 'Enter amount in ₹';
+            }
+        }
+
+        function goToStep(step) {
+            // Validate current step before proceeding
+            if (step > currentStep) {
+                if (currentStep === 2 && !validateForm()) {
+                    return;
+                }
+            }
+            
+            // Hide all steps
+            document.querySelectorAll('.form-step').forEach(stepEl => {
+                stepEl.classList.remove('active');
+            });
+            
+            // Show target step
+            document.getElementById(`step${step}`).classList.add('active');
+            
+            // Update progress indicators
+            updateProgressIndicators(step);
+            
+            // If going to step 3, populate review content
+            if (step === 3) {
+                populateReviewContent();
+            }
+            
+            currentStep = step;
+        }
+
+        function updateProgressIndicators(step) {
+            // Reset all indicators
+            for (let i = 1; i <= 3; i++) {
+                const indicator = document.getElementById(`step${i}-indicator`);
+                const progressBar = document.getElementById(`progress-bar-${i}`);
+                
+                if (i <= step) {
+                    indicator.classList.remove('bg-gray-300', 'text-gray-600');
+                    indicator.classList.add('bg-blue-600', 'text-white');
+                    if (progressBar) {
+                        progressBar.classList.remove('bg-gray-300');
+                        progressBar.classList.add('bg-blue-600');
+                    }
+                } else {
+                    indicator.classList.remove('bg-blue-600', 'text-white');
+                    indicator.classList.add('bg-gray-300', 'text-gray-600');
+                    if (progressBar) {
+                        progressBar.classList.remove('bg-blue-600');
+                        progressBar.classList.add('bg-gray-300');
+                    }
+                }
+            }
+        }
+
+        function validateForm() {
+            const requiredFields = ['fullName', 'mobile', 'email', 'dob', 'income', 'employment', 'loanAmount', 'city'];
+            let isValid = true;
+            
+            requiredFields.forEach(fieldId => {
+                const field = document.getElementById(fieldId);
+                if (!field.value.trim()) {
+                    field.classList.add('border-red-500');
+                    isValid = false;
+                } else {
+                    field.classList.remove('border-red-500');
+                }
+            });
+            
+            // Validate mobile number
+            const mobile = document.getElementById('mobile').value;
+            if (mobile && !/^\d{10}$/.test(mobile)) {
+                document.getElementById('mobile').classList.add('border-red-500');
+                alert('Please enter a valid 10-digit mobile number');
+                isValid = false;
+            }
+            
+            // Validate email
+            const email = document.getElementById('email').value;
+            if (email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+                document.getElementById('email').classList.add('border-red-500');
+                alert('Please enter a valid email address');
+                isValid = false;
+            }
+            
+            if (!isValid) {
+                alert('Please fill in all required fields correctly');
+            }
+            
+            return isValid;
+        }
+
+        function populateReviewContent() {
+            const loanTypeNames = {
+                'personal': 'Personal Loan',
+                'business': 'Business Loan',
+                'home': 'Home Loan',
+                'lap': 'Loan Against Property (LAP)',
+                'used-car': 'Used Car Loan',
+                'new-car': 'New Car Loan',
+                'rto-insurance': 'RTO Insurance'
+            };
+            
+            const reviewContent = document.getElementById('reviewContent');
+            const formData = {
+                loanType: loanTypeNames[selectedLoanType],
+                fullName: document.getElementById('fullName').value,
+                mobile: document.getElementById('mobile').value,
+                email: document.getElementById('email').value,
+                dob: document.getElementById('dob').value,
+                income: document.getElementById('income').value,
+                employment: document.getElementById('employment').value,
+                loanAmount: document.getElementById('loanAmount').value,
+                city: document.getElementById('city').value
+            };
+            
+            reviewContent.innerHTML = `
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div class="bg-gray-50 p-3 rounded">
+                        <strong>Loan Type:</strong> ${formData.loanType}
+                    </div>
+                    <div class="bg-gray-50 p-3 rounded">
+                        <strong>Full Name:</strong> ${formData.fullName}
+                    </div>
+                    <div class="bg-gray-50 p-3 rounded">
+                        <strong>Mobile:</strong> ${formData.mobile}
+                    </div>
+                    <div class="bg-gray-50 p-3 rounded">
+                        <strong>Email:</strong> ${formData.email}
+                    </div>
+                    <div class="bg-gray-50 p-3 rounded">
+                        <strong>Date of Birth:</strong> ${formData.dob}
+                    </div>
+                    <div class="bg-gray-50 p-3 rounded">
+                        <strong>Monthly Income:</strong> ${formData.income}
+                    </div>
+                    <div class="bg-gray-50 p-3 rounded">
+                        <strong>Employment:</strong> ${formData.employment}
+                    </div>
+                    <div class="bg-gray-50 p-3 rounded">
+                        <strong>${selectedLoanType === 'rto-insurance' ? 'Premium Amount' : 'Loan Amount'}:</strong> ₹${parseInt(formData.loanAmount).toLocaleString()}
+                    </div>
+                    <div class="bg-gray-50 p-3 rounded md:col-span-2">
+                        <strong>City:</strong> ${formData.city}
+                    </div>
+                </div>
+            `;
+        }
+
+        // function submitApplication() {
+        //     // Generate a random reference ID
+        //     const referenceId = 'LN' + Date.now().toString().slice(-8) + Math.floor(Math.random() * 100);
+        //     document.getElementById('referenceId').textContent = referenceId;
+            
+        //     // Show success message
+        //     document.querySelectorAll('.form-step').forEach(step => {
+        //         step.classList.remove('active');
+        //     });
+        //     document.getElementById('successMessage').classList.add('active');
+        // }
+async function submitApplication() {
+    const referenceId = 'LN' + Date.now().toString().slice(-8) + Math.floor(Math.random() * 100);
+
+    const data = {
+        referenceId,
+        loanType: selectedLoanType,
+        fullName: document.getElementById('fullName').value,
+        mobile: document.getElementById('mobile').value,
+        email: document.getElementById('email').value,
+        dob: document.getElementById('dob').value,
+        income: document.getElementById('income').value,
+        employment: document.getElementById('employment').value,
+        loanAmount: document.getElementById('loanAmount').value,
+        city: document.getElementById('city').value,
+    };
+
+    try {
+        const res = await fetch("http://localhost:5000/api/apply", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(data)
+        });
+
+        const out = await res.json();
+        if (out.success) {
+            document.getElementById('referenceId').textContent = referenceId;
+
+            // Show success message
+            document.querySelectorAll('.form-step').forEach(step => step.classList.remove('active'));
+            document.getElementById('successMessage').classList.add('active');
+        } else {
+            alert(out.error || "Failed to submit application");
+        }
+    } catch (e) {
+        console.error(e);
+        alert("Network error while submitting application");
+    }
+}
+
+        function startNewApplication() {
+            // Reset form
+            document.getElementById('loanForm').reset();
+            selectedLoanType = '';
+            currentStep = 1;
+            
+            // Reset loan cards
+            document.querySelectorAll('.loan-card').forEach(card => {
+                card.classList.remove('selected');
+            });
+            
+            // Disable next button
+            document.getElementById('nextStep1').disabled = true;
+            
+            // Go back to step 1
+            goToStep(1);
+        }
+
+        // Navigation functions
+        function goToHome() {
+            // Redirect to home page
+            window.location.href = 'index.html';
+
+        }
+
+        function goToContact() {
+            // Create and show contact modal
+            const modal = document.createElement('div');
+            modal.className = 'fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50';
+            modal.innerHTML = `
+                <div class="bg-white rounded-lg shadow-xl p-8 max-w-md mx-4 transform transition-all">
+                    <div class="text-center mb-6">
+                        <div class="text-4xl mb-4">📞</div>
+                        <h2 class="text-2xl font-bold text-gray-800">Contact Us</h2>
+                    </div>
+                    
+                    <div class="space-y-4">
+                        <div class="flex items-center space-x-3">
+                            <div class="text-xl">📱</div>
+                            <div>
+                                <p class="font-semibold">Phone</p>
+                                <p class="text-gray-600">+91 93107 68239</p>
+                            </div>
+                        </div>
+                        
+                        <div class="flex items-center space-x-3">
+                            <div class="text-xl">✉️</div>
+                            <div>   
+                                <p class="font-semibold">Email</p>
+                                <p class="text-gray-600">infocredify.pyt@gmail.com</p>
+                            </div>
+                        </div>
+                        
+                        <div class="flex items-center space-x-3">
+                            <div class="text-xl">🏢</div>
+                            <div>
+                                <p class="font-semibold">Office</p>
+                                <p class="text-gray-600">DLF CORPORATE TOWERS, Complex Market SHIVAJI MARG, Najafgarh Rd, Karampura Industrial Area Delhi, India 110015</p>
+                            </div>
+                        </div>
+                        
+                        <div class="flex items-center space-x-3">
+                            <div class="text-xl">⏰</div>
+                            <div>
+                                <p class="font-semibold">Working Hours</p>
+                                <p class="text-gray-600">Mon-Sat: 9:00 AM - 6:00 PM</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="mt-6 text-center">
+                        <button onclick="closeContactModal()" class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-lg font-semibold">
+                            Close
+                        </button>
+                    </div>
+                </div>
+            `;
+            
+            document.body.appendChild(modal);
+            
+            // Add click outside to close
+            modal.addEventListener('click', function(e) {
+                if (e.target === modal) {
+                    closeContactModal();
+                }
+            });
+        }
+
+        function closeContactModal() {
+            const modal = document.querySelector('.fixed.inset-0');
+            if (modal) {
+                modal.remove();
+            }
+        }
+    </script>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9775644fd7438990',t:'MTc1NjU2ODQ4MS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>

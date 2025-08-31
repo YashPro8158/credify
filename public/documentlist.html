@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Loan Document Checklist Generator</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="shortcut icon" href="logo.png" type="image/x-icon">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+        
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #e4edf5 100%);
+            min-height: 100vh;
+        }
+        
+        .checklist-item {
+            transition: all 0.3s ease;
+        }
+        
+        .checklist-item:hover {
+            transform: translateX(5px);
+        }
+        
+        .print-button {
+            transition: all 0.3s ease;
+        }
+        
+        .print-button:hover {
+            transform: scale(1.05);
+        }
+        
+        @media print {
+            .no-print {
+                display: none;
+            }
+            
+            body {
+                background: white;
+                padding: 20px;
+            }
+            
+            .print-container {
+                box-shadow: none !important;
+            }
+        }
+    </style>
+</head>
+<body class="p-4 md:p-8">
+    <div class="max-w-4xl mx-auto">
+        <div class="bg-white rounded-xl shadow-lg overflow-hidden print-container">
+            <div class="bg-blue-600 p-6 no-print">
+                <h1 class="text-2xl md:text-3xl font-bold text-white">Loan Document Checklist Generator</h1>
+                <p class="text-blue-100 mt-2">Select options below to generate the required document checklist</p>
+            </div>
+            
+            <div class="p-6 no-print">
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Applicant Type</label>
+                        <select id="applicantType" class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+                            <option value="">Select Applicant Type</option>
+                            <option value="Proprietor">Proprietor</option>
+                            <option value="Partnership">Partnership</option>
+                            <option value="PvtLtd">Pvt Ltd</option>
+                            <option value="Salaried">Salaried</option>
+                        </select>
+                    </div>
+                    
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Co-Applicant Type</label>
+                        <select id="coApplicantType" class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+                            <option value="">Select Co-Applicant Type</option>
+                            <option value="Income">Income</option>
+                            <option value="NonIncome">Non-Income</option>
+                            <option value="None">No Co-Applicant</option>
+                        </select>
+                    </div>
+                    
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Loan Type</label>
+                        <select id="loanType" class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+                            <option value="">Select Loan Type</option>
+                            <option value="FreshHomeLoan">Fresh Home Loan</option>
+                            <option value="FreshLAP">Fresh LAP</option>
+                            <option value="HLBTTopup">HL BT Topup</option>
+                            <option value="LAPBTTopup">LAP BT Topup</option>
+                            <option value="CGTMSE">CGTMSE</option>
+                            <option value="NewCarLoan">New Car Loan</option>
+                            <option value="OldCarLoan">Old Car Loan</option>
+                            <option value="PersonalLoan">Personal Loan</option>
+                            <option value="BusinessLoan">Business Loan</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <button id="generateBtn" class="mt-6 bg-blue-600 hover:bg-blue-700 text-white font-medium py-3 px-6 rounded-lg transition duration-300 ease-in-out transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50">
+                    Generate Checklist
+                </button>
+            </div>
+            
+            <div id="resultContainer" class="hidden p-6 border-t border-gray-200">
+                <div class="flex justify-between items-center mb-6">
+                    <h2 id="checklistTitle" class="text-xl md:text-2xl font-semibold text-gray-800"></h2>
+                    <button onclick="window.print()" class="print-button bg-green-600 hover:bg-green-700 text-white font-medium py-2 px-4 rounded-lg flex items-center space-x-2 no-print">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z" />
+                        </svg>
+                        <span>Print</span>
+                    </button>
+                </div>
+                
+                <div class="space-y-6">
+                    <div id="applicantSection" class="hidden">
+                        <h3 class="text-lg font-medium text-blue-600 mb-3">Applicant Documents</h3>
+                        <ul id="applicantChecklist" class="space-y-2 pl-5"></ul>
+                    </div>
+                    
+                    <div id="coApplicantSection" class="hidden">
+                        <h3 class="text-lg font-medium text-blue-600 mb-3">Co-Applicant Documents</h3>
+                        <ul id="coApplicantChecklist" class="space-y-2 pl-5"></ul>
+                    </div>
+                    
+                    <div id="additionalSection" class="hidden">
+                        <h3 class="text-lg font-medium text-blue-600 mb-3">Additional Documents</h3>
+                        <ul id="additionalChecklist" class="space-y-2 pl-5"></ul>
+                    </div>
+                    
+                    <div id="loanSpecificSection" class="hidden">
+                        <h3 class="text-lg font-medium text-blue-600 mb-3">Loan Specific Documents</h3>
+                        <ul id="loanSpecificChecklist" class="space-y-2 pl-5"></ul>
+                    </div>
+                    
+                    <div id="securedLoanSection" class="hidden">
+                        <h3 class="text-lg font-medium text-blue-600 mb-3">Secured Loan Documents</h3>
+                        <ul id="securedLoanChecklist" class="space-y-2 pl-5"></ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="mt-6 text-center text-gray-500 text-sm no-print">
+            © 2023 Loan Document Checklist Generator
+        </div>
+    </div>
+
+    <script>
+        const checklistData = {
+            Proprietor: {
+                applicant: [
+                    "KYC (Aadhaar card, PAN card & photo)",
+                    "GST RC, returns (1 year) & Udyam registration",
+                    "Latest 3 year ITR, Computation, Financials & Form 3CB 3CD",
+                    "Latest 3 year Form 26AS",
+                    "Current & saving account banking statements - Latest 1 year"
+                ],
+                coApplicantIncome: [
+                    "KYC (Aadhaar card, PAN card & photo)",
+                    "Latest 3 year ITR, Computation",
+                    "Latest 3 year Form 26AS",
+                    "Saving account banking statements - Latest 1 year"
+                ],
+                coApplicantNonIncome: [
+                    "KYC (Aadhaar card, PAN card & photo)"
+                ]
+            },
+            Partnership: {
+                applicant: [
+                    "Company PAN card",
+                    "Partnership deed",
+                    "GST RC, returns (1 year) & Udyam registration",
+                    "Latest 3 year ITR, Computation, Financials & Form 3CB 3CD",
+                    "Latest 3 year Form 26AS",
+                    "Current account banking statements - Latest 1 year"
+                ],
+                additional: [
+                    "All partner's documents:",
+                    "KYC (Aadhaar card, PAN card & photo)",
+                    "Latest 3 year ITR, Computation",
+                    "Latest 3 year Form 26AS",
+                    "Saving account banking statements - Latest 1 year"
+                ]
+            },
+            PvtLtd: {
+                applicant: [
+                    "Company PAN card",
+                    "AOA, MOA, COI (Certificate of Incorporation)",
+                    "List of shareholders & directors (as on date CA attested)",
+                    "GST RC, returns (1 year) & Udyam registration",
+                    "Latest 3 year ITR, Computation, Financials & Form 3CA 3CD, Independent report & director report",
+                    "Latest 3 year Form 26AS",
+                    "Current account banking statements - Latest 1 year"
+                ],
+                additional: [
+                    "All Director's documents:",
+                    "KYC (Aadhaar card, PAN card & photo)",
+                    "Latest 3 year ITR, Computation",
+                    "Latest 3 year Form 26AS",
+                    "Saving account banking statements - Latest 1 year"
+                ]
+            },
+            Salaried: {
+                applicant: [
+                    "KYC (Aadhaar card, PAN card & photo)",
+                    "Latest 3 month salary slip",
+                    "Latest 2 years Form 16",
+                    "Salary credit banking statements - Latest 1 year"
+                ],
+                coApplicantIncome: [
+                    "KYC (Aadhaar card, PAN card & photo)",
+                    "Latest 3 month salary slip",
+                    "Latest 2 years Form 16",
+                    "Salary credit banking statements - Latest 1 year"
+                ],
+                coApplicantNonIncome: [
+                    "KYC (Aadhaar card, PAN card & photo)"
+                ]
+            }
+        };
+        
+        const loanSpecificData = {
+            HLBTTopup: [
+                "BT Loan documents (Sanction Letter, Repayment Schedule, SOA, FC & LOD)"
+            ],
+            LAPBTTopup: [
+                "BT Loan documents (Sanction Letter, Repayment Schedule, SOA, FC & LOD)"
+            ],
+            NewCarLoan: [
+                "Proforma Invoice"
+            ],
+            OldCarLoan: [
+                "Car RC"
+            ]
+        };
+        
+        const securedLoanDocuments = [
+            "Property documents (applicable for all secured loans regardless of applicant type)"
+        ];
+        
+        // Define which loan types are secured loans
+        const securedLoanTypes = ["FreshHomeLoan", "FreshLAP", "HLBTTopup", "LAPBTTopup"];
+
+        document.getElementById('generateBtn').addEventListener('click', generateChecklist);
+
+        function generateChecklist() {
+            const applicantType = document.getElementById('applicantType').value;
+            const coApplicantType = document.getElementById('coApplicantType').value;
+            const loanType = document.getElementById('loanType').value;
+            
+            if (!applicantType || !coApplicantType || !loanType) {
+                alert('Please select all options to generate the checklist.');
+                return;
+            }
+            
+            const resultContainer = document.getElementById('resultContainer');
+            const checklistTitle = document.getElementById('checklistTitle');
+            const applicantSection = document.getElementById('applicantSection');
+            const coApplicantSection = document.getElementById('coApplicantSection');
+            const additionalSection = document.getElementById('additionalSection');
+            const loanSpecificSection = document.getElementById('loanSpecificSection');
+            const securedLoanSection = document.getElementById('securedLoanSection');
+            
+            const applicantChecklist = document.getElementById('applicantChecklist');
+            const coApplicantChecklist = document.getElementById('coApplicantChecklist');
+            const additionalChecklist = document.getElementById('additionalChecklist');
+            const loanSpecificChecklist = document.getElementById('loanSpecificChecklist');
+            const securedLoanChecklist = document.getElementById('securedLoanChecklist');
+            
+            // Clear previous results
+            applicantChecklist.innerHTML = '';
+            coApplicantChecklist.innerHTML = '';
+            additionalChecklist.innerHTML = '';
+            loanSpecificChecklist.innerHTML = '';
+            securedLoanChecklist.innerHTML = '';
+            
+            // Set title
+            let loanTypeName = loanType;
+            switch(loanType) {
+                case 'FreshHomeLoan': loanTypeName = 'Fresh Home Loan'; break;
+                case 'FreshLAP': loanTypeName = 'Fresh LAP'; break;
+                case 'HLBTTopup': loanTypeName = 'HL BT Topup'; break;
+                case 'LAPBTTopup': loanTypeName = 'LAP BT Topup'; break;
+                case 'CGTMSE': loanTypeName = 'CGTMSE'; break;
+                case 'NewCarLoan': loanTypeName = 'New Car Loan'; break;
+                case 'OldCarLoan': loanTypeName = 'Old Car Loan'; break;
+                case 'PersonalLoan': loanTypeName = 'Personal Loan'; break;
+                case 'BusinessLoan': loanTypeName = 'Business Loan'; break;
+            }
+            checklistTitle.textContent = `${applicantType} - ${loanTypeName} Checklist`;
+            
+            // Populate applicant checklist
+            if (checklistData[applicantType] && checklistData[applicantType].applicant) {
+                applicantSection.classList.remove('hidden');
+                checklistData[applicantType].applicant.forEach(item => {
+                    const li = document.createElement('li');
+                    li.className = 'flex items-start checklist-item';
+                    li.innerHTML = `
+                        <svg class="h-5 w-5 text-blue-500 mr-2 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                        </svg>
+                        <span>${item}</span>
+                    `;
+                    applicantChecklist.appendChild(li);
+                });
+            } else {
+                applicantSection.classList.add('hidden');
+            }
+            
+            // Populate co-applicant checklist
+            if (coApplicantType !== 'None') {
+                const coApplicantKey = coApplicantType === 'Income' ? 'coApplicantIncome' : 'coApplicantNonIncome';
+                
+                if (checklistData[applicantType] && checklistData[applicantType][coApplicantKey]) {
+                    coApplicantSection.classList.remove('hidden');
+                    checklistData[applicantType][coApplicantKey].forEach(item => {
+                        const li = document.createElement('li');
+                        li.className = 'flex items-start checklist-item';
+                        li.innerHTML = `
+                            <svg class="h-5 w-5 text-blue-500 mr-2 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                            </svg>
+                            <span>${item}</span>
+                        `;
+                        coApplicantChecklist.appendChild(li);
+                    });
+                } else {
+                    coApplicantSection.classList.add('hidden');
+                }
+            } else {
+                coApplicantSection.classList.add('hidden');
+            }
+            
+            // Populate additional checklist (for Partnership and PvtLtd)
+            if (checklistData[applicantType] && checklistData[applicantType].additional) {
+                additionalSection.classList.remove('hidden');
+                checklistData[applicantType].additional.forEach(item => {
+                    const li = document.createElement('li');
+                    li.className = 'flex items-start checklist-item';
+                    
+                    // Check if this is a header item (ends with :)
+                    if (item.endsWith(':')) {
+                        li.innerHTML = `
+                            <span class="font-medium text-gray-800">${item}</span>
+                        `;
+                    } else {
+                        li.innerHTML = `
+                            <svg class="h-5 w-5 text-blue-500 mr-2 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                            </svg>
+                            <span>${item}</span>
+                        `;
+                    }
+                    additionalChecklist.appendChild(li);
+                });
+            } else {
+                additionalSection.classList.add('hidden');
+            }
+            
+            // Populate loan-specific checklist
+            if (loanSpecificData[loanType]) {
+                loanSpecificSection.classList.remove('hidden');
+                loanSpecificData[loanType].forEach(item => {
+                    const li = document.createElement('li');
+                    li.className = 'flex items-start checklist-item';
+                    li.innerHTML = `
+                        <svg class="h-5 w-5 text-blue-500 mr-2 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                        </svg>
+                        <span>${item}</span>
+                    `;
+                    loanSpecificChecklist.appendChild(li);
+                });
+            } else {
+                loanSpecificSection.classList.add('hidden');
+            }
+            
+            // Populate secured loan documents if applicable
+            if (securedLoanTypes.includes(loanType)) {
+                securedLoanSection.classList.remove('hidden');
+                securedLoanDocuments.forEach(item => {
+                    const li = document.createElement('li');
+                    li.className = 'flex items-start checklist-item';
+                    li.innerHTML = `
+                        <svg class="h-5 w-5 text-blue-500 mr-2 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                        </svg>
+                        <span>${item}</span>
+                    `;
+                    securedLoanChecklist.appendChild(li);
+                });
+            } else {
+                securedLoanSection.classList.add('hidden');
+            }
+            
+            // Show result container
+            resultContainer.classList.remove('hidden');
+        }
+    </script>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'97766f99048754aa',t:'MTc1NjU3OTQzMC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>

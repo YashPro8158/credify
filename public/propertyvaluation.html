@@ -1,0 +1,509 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Credify Finance - Property Valuation Calculator</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="shortcut icon" href="logo.png" type="image/x-icon">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+        body { font-family: 'Inter', sans-serif; }
+        .gradient-bg { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); }
+        .card-shadow { box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04); }
+
+            /* 3D Navigation Button Styles */
+        .nav-btn {
+            position: relative;
+            background: linear-gradient(145deg, #ffffff, #e6e6e6);
+            border: none;
+            border-radius: 12px;
+            padding: 12px 24px;
+            font-weight: 600;
+            color: #4a5568;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 
+                8px 8px 16px rgba(0, 0, 0, 0.1),
+                -8px -8px 16px rgba(255, 255, 255, 0.8),
+                inset 0 0 0 rgba(255, 255, 255, 0);
+            transform: translateZ(0);
+        }
+        
+        .nav-btn:hover {
+            transform: translateY(-3px) scale(1.05);
+            box-shadow: 
+                12px 12px 24px rgba(0, 0, 0, 0.15),
+                -12px -12px 24px rgba(255, 255, 255, 0.9),
+                inset 2px 2px 4px rgba(255, 255, 255, 0.3);
+            background: linear-gradient(145deg, #f8f9fa, #e9ecef);
+            color: #2d3748;
+        }
+        
+        .nav-btn:active {
+            transform: translateY(-1px) scale(1.02);
+            box-shadow: 
+                4px 4px 8px rgba(0, 0, 0, 0.2),
+                -4px -4px 8px rgba(255, 255, 255, 0.7),
+                inset 4px 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        
+        .nav-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            border-radius: 12px;
+            background: linear-gradient(145deg, transparent, rgba(255, 255, 255, 0.1));
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        
+        .nav-btn:hover::before {
+            opacity: 1;
+        }
+        
+        .nav-btn i {
+            margin-right: 8px;
+            font-size: 16px;
+        }
+        
+        /* Logo styling */
+        .logo {
+            background: linear-gradient(145deg, #667eea, #764ba2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            font-weight: 800;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+        }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <!-- Header -->
+     <!-- Navigation Bar -->
+    <nav class="bg-white shadow-lg sticky top-0 z-50">
+        <div class="container mx-auto px-4 py-3">
+            <div class="flex items-center justify-between">
+                <!-- Logo -->
+                <div class="flex-shrink-0 logosec" style="display: flex; align-items: center;">
+                        <img src="logo-bg.png" alt="logo" width="10%">
+                        <h1 class="text-2xl font-bold text-indigo-600">Credify</h1>
+                    </div>
+                
+                <!-- Navigation Buttons -->
+                <div class="flex items-center space-x-4">
+                    <button class="nav-btn" onclick="goToHome()">
+                        <i>🏠</i>
+                        Home
+                    </button>
+                    <button class="nav-btn" onclick="goToContact()">
+                        <i>📞</i>
+                        Contact
+                    </button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="gradient-bg text-white py-20">
+        <div class="container mx-auto px-6 text-center">
+            <h2 class="text-5xl font-bold mb-6">Property Valuation Calculator</h2>
+            <p class="text-xl mb-8 max-w-2xl mx-auto opacity-90">Get an instant estimate of your property's market value using our advanced valuation algorithm</p>
+            <div class="flex justify-center space-x-4">
+                <div class="bg-white bg-opacity-20 rounded-lg px-6 py-3">
+                    <div class="text-2xl font-bold">500K+</div>
+                    <div class="text-sm opacity-80">Properties Valued</div>
+                </div>
+                <div class="bg-white bg-opacity-20 rounded-lg px-6 py-3">
+                    <div class="text-2xl font-bold">95%</div>
+                    <div class="text-sm opacity-80">Accuracy Rate</div>
+                </div>
+                <div class="bg-white bg-opacity-20 rounded-lg px-6 py-3">
+                    <div class="text-2xl font-bold">24/7</div>
+                    <div class="text-sm opacity-80">Available</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Calculator Section -->
+    <section class="py-16">
+        <div class="container mx-auto px-6">
+            <div class="max-w-4xl mx-auto">
+                <div class="bg-white rounded-2xl card-shadow p-8">
+                    <h3 class="text-3xl font-bold text-gray-800 mb-8 text-center">Calculate Your Property Value</h3>
+                    
+                    <form id="valuationForm" class="space-y-6">
+                        <div class="grid md:grid-cols-2 gap-6">
+                            <!-- Property Type -->
+                            <div>
+                                <label class="block text-sm font-semibold text-gray-700 mb-2">Property Type</label>
+                                <select id="propertyType" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent">
+                                    <option value="house">Single Family House</option>
+                                    <option value="condo">Condominium</option>
+                                    <option value="townhouse">Townhouse</option>
+                                    <option value="apartment">Apartment</option>
+                                </select>
+                            </div>
+
+                            <!-- Square Footage -->
+                            <div>
+                                <label class="block text-sm font-semibold text-gray-700 mb-2">Square Footage</label>
+                                <input type="number" id="squareFootage" placeholder="e.g., 2500" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent">
+                            </div>
+
+                            <!-- Bedrooms -->
+                            <div>
+                                <label class="block text-sm font-semibold text-gray-700 mb-2">Bedrooms</label>
+                                <select id="bedrooms" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent">
+                                    <option value="1">1 Bedroom</option>
+                                    <option value="2">2 Bedrooms</option>
+                                    <option value="3" selected>3 Bedrooms</option>
+                                    <option value="4">4 Bedrooms</option>
+                                    <option value="5">5+ Bedrooms</option>
+                                </select>
+                            </div>
+
+                            <!-- Bathrooms -->
+                            <div>
+                                <label class="block text-sm font-semibold text-gray-700 mb-2">Bathrooms</label>
+                                <select id="bathrooms" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent">
+                                    <option value="1">1 Bathroom</option>
+                                    <option value="1.5">1.5 Bathrooms</option>
+                                    <option value="2" selected>2 Bathrooms</option>
+                                    <option value="2.5">2.5 Bathrooms</option>
+                                    <option value="3">3+ Bathrooms</option>
+                                </select>
+                            </div>
+
+                            <!-- Year Built -->
+                            <div>
+                                <label class="block text-sm font-semibold text-gray-700 mb-2">Year Built</label>
+                                <input type="number" id="yearBuilt" placeholder="e.g., 1995" min="1800" max="2024" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent">
+                            </div>
+
+                            <!-- Location -->
+                            <div>
+                                <label class="block text-sm font-semibold text-gray-700 mb-2">Location Quality</label>
+                                <select id="location" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent">
+                                    <option value="excellent">Excellent (Prime location)</option>
+                                    <option value="good" selected>Good (Desirable area)</option>
+                                    <option value="average">Average (Standard area)</option>
+                                    <option value="fair">Fair (Developing area)</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <!-- Property Condition -->
+                        <div>
+                            <label class="block text-sm font-semibold text-gray-700 mb-2">Property Condition</label>
+                            <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
+                                <label class="flex items-center space-x-2 cursor-pointer">
+                                    <input type="radio" name="condition" value="excellent" class="text-indigo-600">
+                                    <span class="text-sm">Excellent</span>
+                                </label>
+                                <label class="flex items-center space-x-2 cursor-pointer">
+                                    <input type="radio" name="condition" value="good" checked class="text-indigo-600">
+                                    <span class="text-sm">Good</span>
+                                </label>
+                                <label class="flex items-center space-x-2 cursor-pointer">
+                                    <input type="radio" name="condition" value="fair" class="text-indigo-600">
+                                    <span class="text-sm">Fair</span>
+                                </label>
+                                <label class="flex items-center space-x-2 cursor-pointer">
+                                    <input type="radio" name="condition" value="poor" class="text-indigo-600">
+                                    <span class="text-sm">Needs Work</span>
+                                </label>
+                            </div>
+                        </div>
+
+                        <!-- Calculate Button -->
+                        <div class="text-center pt-6">
+                            <button type="submit" class="bg-gradient-to-r from-indigo-600 to-purple-600 text-white px-12 py-4 rounded-lg text-lg font-semibold hover:from-indigo-700 hover:to-purple-700 transform hover:scale-105 transition-all duration-200 shadow-lg">
+                                Calculate Property Value
+                            </button>
+                        </div>
+                    </form>
+
+                    <!-- Results Section -->
+                    <div id="results" class="hidden mt-12 p-8 bg-gradient-to-r from-green-50 to-blue-50 rounded-xl border border-green-200">
+                        <h4 class="text-2xl font-bold text-gray-800 mb-6 text-center">Property Valuation Results</h4>
+                        <div class="grid md:grid-cols-3 gap-6 text-center">
+                            <div class="bg-white rounded-lg p-6 shadow-md">
+                                <div class="text-sm text-gray-600 mb-2">Estimated Value</div>
+                                <div id="estimatedValue" class="text-3xl font-bold text-green-600">₹0</div>
+                            </div>
+                            <div class="bg-white rounded-lg p-6 shadow-md">
+                                <div class="text-sm text-gray-600 mb-2">Value Range</div>
+                                <div id="valueRange" class="text-lg font-semibold text-blue-600">₹0 - ₹0</div>
+                            </div>
+                            <div class="bg-white rounded-lg p-6 shadow-md">
+                                <div class="text-sm text-gray-600 mb-2">Price per Sq Ft</div>
+                                <div id="pricePerSqFt" class="text-lg font-semibold text-purple-600">₹0</div>
+                            </div>
+                        </div>
+                        <div class="mt-6 p-4 bg-blue-100 rounded-lg">
+                            <p class="text-sm text-blue-800"><strong>Note:</strong> This is an estimated valuation based on the information provided. For a precise market valuation, please contact our professional appraisers.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="py-16 px-4 sm:px-6 lg:px-8 bg-gray-50">
+        <div class="max-w-7xl mx-auto">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl md:text-4xl font-bold text-gray-900 mb-4">Why Choose Credify?</h2>
+                <p class="text-xl text-gray-600">We're committed to providing exceptional service and competitive rates.</p>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+                <div class="text-center">
+                    <div class="bg-indigo-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <span class="text-2xl">⚡</span>
+                    </div>
+                    <h3 class="text-xl font-semibold text-gray-900 mb-2">Fast Approval</h3>
+                    <p class="text-gray-600">Get approved in as little as 24 hours with our streamlined process.</p>
+                </div>
+                <div class="text-center">
+                    <div class="bg-indigo-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <span class="text-2xl">💎</span>
+                    </div>
+                    <h3 class="text-xl font-semibold text-gray-900 mb-2">Competitive Rates</h3>
+                    <p class="text-gray-600">Enjoy some of the most competitive interest rates in the market.</p>
+                </div>
+                <div class="text-center">
+                    <div class="bg-indigo-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <span class="text-2xl">🛡️</span>
+                    </div>
+                    <h3 class="text-xl font-semibold text-gray-900 mb-2">Secure & Safe</h3>
+                    <p class="text-gray-600">Your personal information is protected with bank-level security.</p>
+                </div>
+                <div class="text-center">
+                    <div class="bg-indigo-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <span class="text-2xl">🤝</span>
+                    </div>
+                    <h3 class="text-xl font-semibold text-gray-900 mb-2">Personal Service</h3>
+                    <p class="text-gray-600">Dedicated loan specialists to guide you through every step.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+<!-- Footer -->
+    <footer class="bg-gray-900 text-white py-12 px-4 sm:px-6 lg:px-8">
+        <div class="max-w-7xl mx-auto">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+                <div>
+                    <img src="logo-bg.png" alt="logofooter" class="footerlogo" width="28%">
+                    <p class="text-gray-400 mb-4">Powering Your Tomorrow</p>
+                    <p class="text-gray-400 text-sm">Making financial dreams accessible to everyone with transparent, fair, and competitive lending solutions.</p>
+                </div>
+                <div>
+                    <h4 class="text-lg font-semibold mb-4">Loan Products</h4>
+                   <ul class="space-y-2 text-gray-400">
+                        <li><a href="personalloanpage.html" class="hover:text-white transition-colors">Personal Loans</a></li>
+                        <li><a href="businessloanpage.html" class="hover:text-white transition-colors">Business Loans</a></li>
+                        <li><a href="homeloanpage.html" class="hover:text-white transition-colors">Home Loans</a></li>
+                        <li><a href="laploanpage.html" class="hover:text-white transition-colors">Loan Against Property</a></li>
+                        <li><a href="newcarloanpage.html" class="hover:text-white transition-colors">New Car Loan</a></li>
+                        <li><a href="usedcarloanpage.html" class="hover:text-white transition-colors">Used Car Loan</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="text-lg font-semibold mb-4">Company</h4>
+                    <ul class="space-y-2 text-gray-400">
+                        <li><a href="#about" class="hover:text-white transition-colors">About Us</a></li>
+                        <li><a href="career.html" class="hover:text-white transition-colors">Careers</a></li>
+                        <li><a href="#" class="hover:text-white transition-colors">Press</a></li>
+                        <li><a href="#" class="hover:text-white transition-colors">Blog</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="text-lg font-semibold mb-4">Support</h4>
+                    <ul class="space-y-2 text-gray-400">
+                        <li><a href="#" class="hover:text-white transition-colors">Help Center</a></li>
+                        <li><a href="#" class="hover:text-white transition-colors">Privacy Policy</a></li>
+                        <li><a href="#" class="hover:text-white transition-colors">Terms of Service</a></li>
+                        <li><a href="#" class="hover:text-white transition-colors">Contact Us</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="border-t border-gray-800 mt-8 pt-8 text-center text-gray-400">
+                <p>&copy; 2025 Credify. All rights reserved. | Licensed Lender | Equal Housing Opportunity</p>
+            </div>
+        </div>
+    </footer>
+    
+  
+
+    <script>
+        document.getElementById('valuationForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            // Get form values
+            const propertyType = document.getElementById('propertyType').value;
+            const squareFootage = parseInt(document.getElementById('squareFootage').value) || 0;
+            const bedrooms = parseInt(document.getElementById('bedrooms').value);
+            const bathrooms = parseFloat(document.getElementById('bathrooms').value);
+            const yearBuilt = parseInt(document.getElementById('yearBuilt').value) || 2000;
+            const location = document.getElementById('location').value;
+            const condition = document.querySelector('input[name="condition"]:checked').value;
+            
+            // Validation
+            if (squareFootage <= 0) {
+                alert('Please enter a valid square footage.');
+                return;
+            }
+            
+            // Base price per square foot calculation (in INR)
+            let basePricePerSqFt = 8000;
+            
+            // Property type multiplier
+            const typeMultipliers = {
+                'house': 1.0,
+                'condo': 0.85,
+                'townhouse': 0.9,
+                'apartment': 0.75
+            };
+            
+            // Location multiplier
+            const locationMultipliers = {
+                'excellent': 1.3,
+                'good': 1.1,
+                'average': 1.0,
+                'fair': 0.85
+            };
+            
+            // Condition multiplier
+            const conditionMultipliers = {
+                'excellent': 1.15,
+                'good': 1.0,
+                'fair': 0.9,
+                'poor': 0.75
+            };
+            
+            // Age factor (newer properties worth more)
+            const currentYear = new Date().getFullYear();
+            const age = currentYear - yearBuilt;
+            let ageFactor = 1.0;
+            if (age < 5) ageFactor = 1.1;
+            else if (age < 15) ageFactor = 1.05;
+            else if (age < 30) ageFactor = 1.0;
+            else if (age < 50) ageFactor = 0.95;
+            else ageFactor = 0.85;
+            
+            // Bedroom/bathroom bonus
+            let roomBonus = 1.0;
+            if (bedrooms >= 4 && bathrooms >= 2.5) roomBonus = 1.1;
+            else if (bedrooms >= 3 && bathrooms >= 2) roomBonus = 1.05;
+            
+            // Calculate final price per square foot
+            const finalPricePerSqFt = basePricePerSqFt * 
+                typeMultipliers[propertyType] * 
+                locationMultipliers[location] * 
+                conditionMultipliers[condition] * 
+                ageFactor * 
+                roomBonus;
+            
+            // Calculate estimated value
+            const estimatedValue = Math.round(squareFootage * finalPricePerSqFt);
+            
+            // Calculate range (±10%)
+            const lowerRange = Math.round(estimatedValue * 0.9);
+            const upperRange = Math.round(estimatedValue * 1.1);
+            
+            // Display results
+            document.getElementById('estimatedValue').textContent = '₹' + estimatedValue.toLocaleString('en-IN');
+            document.getElementById('valueRange').textContent = '₹' + lowerRange.toLocaleString('en-IN') + ' - ₹' + upperRange.toLocaleString('en-IN');
+            document.getElementById('pricePerSqFt').textContent = '₹' + Math.round(finalPricePerSqFt).toLocaleString('en-IN');
+            
+            // Show results section
+            document.getElementById('results').classList.remove('hidden');
+            
+            // Scroll to results
+            document.getElementById('results').scrollIntoView({ behavior: 'smooth' });
+        });
+
+         function goToHome() {
+            // Redirect to home page
+            window.location.href = 'index.html';
+
+        }
+
+        function goToContact() {
+            // Create and show contact modal
+            const modal = document.createElement('div');
+            modal.className = 'fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50';
+            modal.innerHTML = `
+                <div class="bg-white rounded-lg shadow-xl p-8 max-w-md mx-4 transform transition-all">
+                    <div class="text-center mb-6">
+                        <div class="text-4xl mb-4">📞</div>
+                        <h2 class="text-2xl font-bold text-gray-800">Contact Us</h2>
+                    </div>
+                    
+                    <div class="space-y-4">
+                        <div class="flex items-center space-x-3">
+                            <div class="text-xl">📱</div>
+                            <div>
+                                <p class="font-semibold">Phone</p>
+                                <p class="text-gray-600">+91 93107 68239</p>
+                            </div>
+                        </div>
+                        
+                        <div class="flex items-center space-x-3">
+                            <div class="text-xl">✉️</div>
+                            <div>   
+                                <p class="font-semibold">Email</p>
+                                <p class="text-gray-600">infocredify.pyt@gmail.com</p>
+                            </div>
+                        </div>
+                        
+                        <div class="flex items-center space-x-3">
+                            <div class="text-xl">🏢</div>
+                            <div>
+                                <p class="font-semibold">Office</p>
+                                <p class="text-gray-600">DLF CORPORATE TOWERS, Complex Market SHIVAJI MARG, Najafgarh Rd, Karampura Industrial Area Delhi, India 110015</p>
+                            </div>
+                        </div>
+                        
+                        <div class="flex items-center space-x-3">
+                            <div class="text-xl">⏰</div>
+                            <div>
+                                <p class="font-semibold">Working Hours</p>
+                                <p class="text-gray-600">Mon-Sat: 9:00 AM - 6:00 PM</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="mt-6 text-center">
+                        <button onclick="closeContactModal()" class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-lg font-semibold">
+                            Close
+                        </button>
+                    </div>
+                </div>
+            `;
+            
+            document.body.appendChild(modal);
+            
+            // Add click outside to close
+            modal.addEventListener('click', function(e) {
+                if (e.target === modal) {
+                    closeContactModal();
+                }
+            });
+        }
+
+        function closeContactModal() {
+            const modal = document.querySelector('.fixed.inset-0');
+            if (modal) {
+                modal.remove();
+            }
+        }
+    </script>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9775d7f6a46d8993',t:'MTc1NjU3MzIxOC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>

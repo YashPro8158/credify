@@ -1,0 +1,720 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Credify - Powering Your Tomorrow</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="shortcut icon" href="logo.png" type="image/x-icon">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Inter', sans-serif; }
+        .gradient-bg { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); }
+        .card-hover { transition: transform 0.3s ease, box-shadow 0.3s ease; }
+        .card-hover:hover { transform: translateY(-5px); box-shadow: 0 20px 40px rgba(0,0,0,0.1); }
+        .animate-float { animation: float 6s ease-in-out infinite; }
+        @keyframes float { 0%, 100% { transform: translateY(0px); } 50% { transform: translateY(-20px); } }
+        
+        /* 3D Dropdown Styles */
+        .dropdown-3d {
+            perspective: 1000px;
+            transform-style: preserve-3d;
+        }
+        .animate-float img{
+            width: 70%;
+            transform: scaleX(-1);
+            -webkit-transform: scaleX(-1);
+            border-radius: 50%;
+        }
+        
+        .dropdown-menu-3d {
+            transform-origin: top center;
+            backface-visibility: hidden;
+        }
+        
+        .dropdown-open {
+            opacity: 1 !important;
+            visibility: visible !important;
+            transform: scale(1) rotateX(0deg) !important;
+        }
+        
+        .dropdown-arrow-rotate {
+            transform: rotate(180deg);
+        }
+        
+        .tool-content-show {
+            opacity: 1 !important;
+            transform: translateY(0) !important;
+        }
+      
+       
+        
+        .cofounderimg{
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+
+        }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <!-- Navigation -->
+    <nav class="bg-white shadow-lg fixed w-full z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <div class="flex items-center">
+                    <div class="flex-shrink-0 logosec" style="display: flex; align-items: center;">
+                        <img src="logo-bg.png" alt="logo" width="10%">
+                        <h1 class="text-2xl font-bold text-indigo-600">Credify</h1>
+                    </div>
+                </div>
+                <div class="hidden md:block">
+                    <div class="ml-10 flex items-baseline space-x-8">
+                        <a href="#home" class="text-gray-700 hover:text-indigo-600 px-3 py-2 text-sm font-medium transition-colors">Home</a>
+                       <div class="relative group">
+                            <button class="text-gray-700 hover:text-indigo-600 px-3 py-2 text-sm font-medium transition-colors flex items-center space-x-1">
+                                <span>Loans</span>
+                                <svg class="w-4 h-4 transition-transform group-hover:rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                                </svg>
+                            </button>
+                            <div class="absolute top-full left-0 mt-2 w-56 bg-white rounded-xl shadow-2xl border border-gray-100 opacity-0 invisible group-hover:opacity-100 group-hover:visible transform scale-95 group-hover:scale-100 transition-all duration-300 z-50">
+                                <div class="py-2">
+                                    <a href="personalloanpage.html" class="block px-6 py-3 text-gray-700 hover:bg-gradient-to-r hover:from-indigo-50 hover:to-purple-50 hover:text-indigo-600 transition-all duration-300">Personal Loans</a>
+                                    <a href="businessloanpage.html" class="block px-6 py-3 text-gray-700 hover:bg-gradient-to-r hover:from-indigo-50 hover:to-purple-50 hover:text-indigo-600 transition-all duration-300">Business Loans</a>
+                                    <a href="autoloanpage.html" class="block px-6 py-3 text-gray-700 hover:bg-gradient-to-r hover:from-indigo-50 hover:to-purple-50 hover:text-indigo-600 transition-all duration-300">Auto Loans</a>
+                                    <a href="homeloanpage.html" class="block px-6 py-3 text-gray-700 hover:bg-gradient-to-r hover:from-indigo-50 hover:to-purple-50 hover:text-indigo-600 transition-all duration-300">Home Loans</a>
+                                    <a href="laploanpage.html" class="block px-6 py-3 text-gray-700 hover:bg-gradient-to-r hover:from-indigo-50 hover:to-purple-50 hover:text-indigo-600 transition-all duration-300">Loan Against Property</a>
+                                    <a href="newcarloanpage.html" class="block px-6 py-3 text-gray-700 hover:bg-gradient-to-r hover:from-indigo-50 hover:to-purple-50 hover:text-indigo-600 transition-all duration-300">New Car Loans</a>
+                                    <a href="usedcarloanpage.html" class="block px-6 py-3 text-gray-700 hover:bg-gradient-to-r hover:from-indigo-50 hover:to-purple-50 hover:text-indigo-600 transition-all duration-300">Used Car Loans</a>
+                                </div>
+                            </div>
+                        </div>
+
+                        <a href="#about" class="text-gray-700 hover:text-indigo-600 px-3 py-2 text-sm font-medium transition-colors">About</a>
+                        <a href="#contact" class="text-gray-700 hover:text-indigo-600 px-3 py-2 text-sm font-medium transition-colors">Contact</a>
+                        <div class="relative group">
+                            <button class="text-gray-700 hover:text-indigo-600 px-3 py-2 text-sm font-medium transition-colors flex items-center space-x-1">
+                                <span>Tools</span>
+                                <svg class="w-4 h-4 transition-transform group-hover:rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                                </svg>
+                            </button>
+                            <div class="absolute top-full left-0 mt-2 w-56 bg-white rounded-xl shadow-2xl border border-gray-100 opacity-0 invisible group-hover:opacity-100 group-hover:visible transform scale-95 group-hover:scale-100 transition-all duration-300 z-50">
+                                <div class="py-2">
+                                    <a href="documentlist.html" target="_blank" class="block px-6 py-3 text-gray-700 hover:bg-gradient-to-r hover:from-indigo-50 hover:to-purple-50 hover:text-indigo-600 transition-all duration-300 flex items-center space-x-3">
+                                        <span class="text-lg">📄</span>
+                                        <span class="font-medium">Document List</span>
+                                    </a>
+                                    <a href="emicalculator.html" target="_blank"  class="block px-6 py-3 text-gray-700 hover:bg-gradient-to-r hover:from-indigo-50 hover:to-purple-50 hover:text-indigo-600 transition-all duration-300 flex items-center space-x-3">
+                                        <span class="text-lg">🧮</span>
+                                        <span class="font-medium">EMI Calculator</span>
+                                    </a>
+                                    
+                                     <a href="propertyvaluation.html" class="block px-6 py-3 text-gray-700 hover:bg-gradient-to-r hover:from-indigo-50 hover:to-purple-50 hover:text-indigo-600 transition-all duration-300 flex items-center space-x-3">
+                              <span class="text-lg">🏠</span>
+                        <span class="font-medium">Property valuation</span>
+                                    </a>
+                                    
+                                   
+                                </div>
+                            </div>
+                        </div>
+                        <button class="bg-indigo-600 text-white px-6 py-2 rounded-lg hover:bg-indigo-700 transition-colors" >Apply Now</button>
+                    </div>
+                </div>
+                <div class="md:hidden">
+                    <button id="mobile-menu-btn" class="text-gray-700 hover:text-indigo-600">
+                        <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+        <!-- Mobile menu -->
+        <div id="mobile-menu" class="md:hidden hidden bg-white border-t">
+            <div class="px-2 pt-2 pb-3 space-y-1">
+                <a href="#home" class="block px-3 py-2 text-gray-700 hover:text-indigo-600">Home</a>
+                <a href="#loans" class="block px-3 py-2 text-gray-700 hover:text-indigo-600">Loans</a>
+                <a href="#about" class="block px-3 py-2 text-gray-700 hover:text-indigo-600">About</a>
+                <a href="#contact" class="block px-3 py-2 text-gray-700 hover:text-indigo-600">Contact</a>
+                <div class="px-3 py-2">
+                    <div class="text-gray-700 font-medium mb-2">Tools</div>
+                    <a href="#" class="block px-3 py-2 text-gray-600 hover:text-indigo-600 text-sm flex items-center space-x-2">
+                        <span>📄</span>
+                        <span>Document List</span>
+                    </a>
+                    <a href="#" class="block px-3 py-2 text-gray-600 hover:text-indigo-600 text-sm flex items-center space-x-2">
+                        <span>🧮</span>
+                        <span>EMI Calcu lator</span>
+                    </a>
+                      <a href="propertyvaluation.html" class="block px-3 py-2 text-gray-600 hover:text-indigo-600 text-sm flex items-center space-x-2">
+                        <span>🏠</span>
+                        <span>Property valuation</span>
+                    </a>
+                    
+                </div>
+                <button class="w-full text-left bg-indigo-600 text-white px-3 py-2 rounded-lg hover:bg-indigo-700 transition-colors mt-2">Apply Now</button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section id="home" class="gradient-bg pt-20 pb-16 px-4 sm:px-6 lg:px-8">
+        <div class="max-w-7xl mx-auto">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+                <div class="text-white">
+                    <h1 class="text-4xl md:text-6xl font-bold mb-6">
+                        Credify
+                        <span class="block text-2xl md:text-3xl font-light mt-2">Powering Your Tomorrow</span>
+                    </h1>
+                    <p class="text-xl mb-8 text-gray-100">Get the financial support you need with our flexible loan solutions. Fast approval, competitive rates, and personalized service.</p>
+                    <div class="flex flex-col sm:flex-row gap-4">
+                        <button class="bg-white text-indigo-600 px-8 py-4 rounded-lg font-semibold hover:bg-gray-100 transition-colors">Get Started Today</button>
+                        <button class="border-2 border-white text-white px-8 py-4 rounded-lg font-semibold hover:bg-white hover:text-indigo-600 transition-colors" onclick="goToContact()">Choose car number</button>
+                    </div>
+                </div>
+                <div class="animate-float">
+                   <img src="headerimg.png" alt="customersupport" class="w-full">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Loan Types Section -->
+    <section id="loans" class="py-16 px-4 sm:px-6 lg:px-8 bg-white">
+        <div class="max-w-7xl mx-auto">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl md:text-4xl font-bold text-gray-900 mb-4">Our Loan Solutions</h2>
+                <p class="text-xl text-gray-600 max-w-3xl mx-auto">Choose from our range of flexible loan options designed to meet your unique financial needs.</p>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Personal Loans -->
+                <div class="bg-white rounded-xl shadow-lg p-8 card-hover border border-gray-100">
+                    <div class="text-4xl mb-4">👤</div>
+                    <h3 class="text-2xl font-bold text-gray-900 mb-4">Personal Loans</h3>
+                    <p class="text-gray-600 mb-6">Flexible personal loans for any purpose. Quick approval and competitive rates starting from 10.99% APR.</p>
+                    <ul class="space-y-2 mb-6">
+                        <li class="flex items-center text-gray-700">
+                            <span class="text-green-500 mr-2">✓</span>
+                            Up to ₹50 Lakhs
+                        </li>
+                        <li class="flex items-center text-gray-700">
+                            <span class="text-green-500 mr-2">✓</span>
+                            No collateral required
+                        </li>
+                        <li class="flex items-center text-gray-700">
+                            <span class="text-green-500 mr-2">✓</span>
+                            24-hour approval
+                        </li>
+                    </ul>
+                    <button class="w-full bg-indigo-600 text-white py-3 rounded-lg hover:bg-indigo-700 transition-colors font-semibold" onclick="gotopersonalloan()">Apply personal loan</button>
+                </div>
+
+                <!-- Home Loans -->
+                <div class="bg-white rounded-xl shadow-lg p-8 card-hover border border-gray-100">
+                    <div class="text-4xl mb-4">🏠</div>
+                    <h3 class="text-2xl font-bold text-gray-900 mb-4">Home Loans</h3>
+                    <p class="text-gray-600 mb-6">Make your dream home a reality with our attractive home loan rates and flexible repayment options.</p>
+                    <ul class="space-y-2 mb-6">
+                        <li class="flex items-center text-gray-700">
+                            <span class="text-green-500 mr-2">✓</span>
+                            Up to ₹5 Crores
+                        </li>
+                        <li class="flex items-center text-gray-700">
+                            <span class="text-green-500 mr-2">✓</span>
+                            Rates from 8.5% p.a.
+                        </li>
+                        <li class="flex items-center text-gray-700">
+                            <span class="text-green-500 mr-2">✓</span>
+                            Up to 30 years tenure
+                        </li>
+                    </ul>
+                    <button class="w-full bg-indigo-600 text-white py-3 rounded-lg hover:bg-indigo-700 transition-colors font-semibold" onclick="gotohomeloan()">Apply home loan</button>
+                </div>
+
+                <!-- LAP (Loan Against Property) -->
+                <div class="bg-white rounded-xl shadow-lg p-8 card-hover border border-gray-100">
+                    <div class="text-4xl mb-4">🏢</div>
+                    <h3 class="text-2xl font-bold text-gray-900 mb-4">Loan Against Property</h3>
+                    <p class="text-gray-600 mb-6">Unlock the value of your property with our competitive LAP rates for business or personal needs.</p>
+                    <ul class="space-y-2 mb-6">
+                        <li class="flex items-center text-gray-700">
+                            <span class="text-green-500 mr-2">✓</span>
+                            Up to ₹10 Crores
+                        </li>
+                        <li class="flex items-center text-gray-700">
+                            <span class="text-green-500 mr-2">✓</span>
+                            Rates from 9.5% p.a.
+                        </li>
+                        <li class="flex items-center text-gray-700">
+                            <span class="text-green-500 mr-2">✓</span>
+                            Flexible repayment
+                        </li>
+                    </ul>
+                    <button class="w-full bg-indigo-600 text-white py-3 rounded-lg hover:bg-indigo-700 transition-colors font-semibold" onclick="gotolap()">Apply loan against property</button>
+                </div>
+
+                <!-- Business Loans -->
+                <div class="bg-white rounded-xl shadow-lg p-8 card-hover border border-gray-100">
+                    <div class="text-4xl mb-4">💼</div>
+                    <h3 class="text-2xl font-bold text-gray-900 mb-4">Business Loans</h3>
+                    <p class="text-gray-600 mb-6">Grow your business with our tailored business loan solutions. Competitive rates and flexible terms.</p>
+                    <ul class="space-y-2 mb-6">
+                        <li class="flex items-center text-gray-700">
+                            <span class="text-green-500 mr-2">✓</span>
+                            Up to ₹2 Crores
+                        </li>
+                        <li class="flex items-center text-gray-700">
+                            <span class="text-green-500 mr-2">✓</span>
+                            Quick processing
+                        </li>
+                        <li class="flex items-center text-gray-700">
+                            <span class="text-green-500 mr-2">✓</span>
+                            Business advisor support
+                        </li>
+                    </ul>
+                    <button class="w-full bg-indigo-600 text-white py-3 rounded-lg hover:bg-indigo-700 transition-colors font-semibold" onclick="gotobusinessloan()">Apply business loan</button>
+                </div>
+
+                <!-- Used Car Loans -->
+                <div class="bg-white rounded-xl shadow-lg p-8 card-hover border border-gray-100">
+                    <div class="text-4xl mb-4">🚗</div>
+                    <h3 class="text-2xl font-bold text-gray-900 mb-4">Used Car Loans</h3>
+                    <p class="text-gray-600 mb-6">Get your pre-owned car with attractive interest rates and hassle-free documentation process.</p>
+                    <ul class="space-y-2 mb-6">
+                        <li class="flex items-center text-gray-700">
+                            <span class="text-green-500 mr-2">✓</span>
+                            Up to ₹50 Lakhs
+                        </li>
+                        <li class="flex items-center text-gray-700">
+                            <span class="text-green-500 mr-2">✓</span>
+                            Cars up to 10 years old
+                        </li>
+                        <li class="flex items-center text-gray-700">
+                            <span class="text-green-500 mr-2">✓</span>
+                            Quick approval
+                        </li>
+                    </ul>
+                    <button class="w-full bg-indigo-600 text-white py-3 rounded-lg hover:bg-indigo-700 transition-colors font-semibold" onclick="gotousedcarloan()">Apply used car loan</button>
+                </div>
+
+                <!-- RTO Insurance -->
+                <div class="bg-white rounded-xl shadow-lg p-8 card-hover border border-gray-100">
+                    <div class="text-4xl mb-4">🛡️</div>
+                    <h3 class="text-2xl font-bold text-gray-900 mb-4">RTO Insurance</h3>
+                    <p class="text-gray-600 mb-6">Comprehensive vehicle insurance solutions with competitive premiums and quick claim settlement.</p>
+                    <ul class="space-y-2 mb-6">
+                        <li class="flex items-center text-gray-700">
+                            <span class="text-green-500 mr-2">✓</span>
+                            Third-party & comprehensive
+                        </li>
+                        <li class="flex items-center text-gray-700">
+                            <span class="text-green-500 mr-2">✓</span>
+                            Instant policy issuance
+                        </li>
+                        <li class="flex items-center text-gray-700">
+                            <span class="text-green-500 mr-2">✓</span>
+                            24/7 claim support
+                        </li>
+                    </ul>
+                    <button class="w-full bg-indigo-600 text-white py-3 rounded-lg hover:bg-indigo-700 transition-colors font-semibold">Apply Now</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="py-16 px-4 sm:px-6 lg:px-8 bg-gray-50">
+        <div class="max-w-7xl mx-auto">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl md:text-4xl font-bold text-gray-900 mb-4">Why Choose Credify?</h2>
+                <p class="text-xl text-gray-600">We're committed to providing exceptional service and competitive rates.</p>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+                <div class="text-center">
+                    <div class="bg-indigo-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <span class="text-2xl">⚡</span>
+                    </div>
+                    <h3 class="text-xl font-semibold text-gray-900 mb-2">Fast Approval</h3>
+                    <p class="text-gray-600">Get approved in as little as 24 hours with our streamlined process.</p>
+                </div>
+                <div class="text-center">
+                    <div class="bg-indigo-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <span class="text-2xl">💎</span>
+                    </div>
+                    <h3 class="text-xl font-semibold text-gray-900 mb-2">Competitive Rates</h3>
+                    <p class="text-gray-600">Enjoy some of the most competitive interest rates in the market.</p>
+                </div>
+                <div class="text-center">
+                    <div class="bg-indigo-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <span class="text-2xl">🛡️</span>
+                    </div>
+                    <h3 class="text-xl font-semibold text-gray-900 mb-2">Secure & Safe</h3>
+                    <p class="text-gray-600">Your personal information is protected with bank-level security.</p>
+                </div>
+                <div class="text-center">
+                    <div class="bg-indigo-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <span class="text-2xl">🤝</span>
+                    </div>
+                    <h3 class="text-xl font-semibold text-gray-900 mb-2">Personal Service</h3>
+                    <p class="text-gray-600">Dedicated loan specialists to guide you through every step.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about" class="py-16 px-4 sm:px-6 lg:px-8 bg-white">
+        <div class="max-w-7xl mx-auto">
+            <!-- About Credify - Full Width -->
+            <div class="text-center mb-16">
+                <h2 class="text-3xl md:text-4xl font-bold text-gray-900 mb-8">About Credify</h2>
+                <div class="max-w-4xl mx-auto">
+                    <p class="text-xl text-gray-600 mb-8 leading-relaxed">At Credify, our mission is to empower individuals and businesses to achieve their dreams with the right financial support. We believe that timely and transparent lending can change lives.
+That’s why we provide fast, simple, and reliable loan solutions — with no hidden charges and no complicated processes. Just honest, affordable, and trustworthy financial assistance you can rely on.</p>
+                    <p class="text-xl text-gray-600 mb-12 leading-relaxed">Our mission is simple: to power your tomorrow by providing the financial support you need today. With our innovative technology and personalized approach, we make borrowing easy, fast, and stress-free.</p>
+                </div>
+                
+              
+            </div>
+
+            <!-- Co-founders Section -->
+            <div class="text-center mb-12">
+                <h3 class="text-2xl md:text-3xl font-bold text-gray-900 mb-4">Meet Our Leadership Team</h3>
+                <p class="text-lg text-gray-600 max-w-2xl mx-auto">Experienced professionals dedicated to transforming the lending landscape in India</p>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-5xl mx-auto">
+                <!-- Co-founder 1 -->
+                <div class="bg-white rounded-2xl shadow-xl p-8 card-hover border border-gray-100 text-center transform hover:scale-105 transition-all duration-300">
+                    <div class="relative w-24 h-24 mx-auto mb-6">
+                       <img src="co-founders/sachin.jpeg" alt="co-founder2" class="cofounderimg rounded-full flex items-center justify-center animate-bounce shadow-lg" style="animation-delay: 0.2s;
+                        ">
+                        <div class="absolute -top-1 -right-1 w-6 h-6 bg-green-500 rounded-full flex items-center justify-center animate-ping">
+                            <div class="w-3 h-3 bg-green-400 rounded-full"></div>
+                        </div>
+                    </div>
+                    <h4 class="text-xl font-bold text-gray-900 mb-2">Sachin</h4>
+                    <p class="text-indigo-600 font-semibold mb-4 text-lg">Partner</p>
+                </div>
+                
+                <!-- Co-founder 2 -->
+                <div class="bg-white rounded-2xl shadow-xl p-8 card-hover border border-gray-100 text-center transform hover:scale-105 transition-all duration-300">
+                    <div class="relative w-24 h-24 mx-auto mb-6">
+                  
+                        <img src="co-founders/tushargupta.jpeg" alt="co-founder2" class="cofounderimg rounded-full flex items-center justify-center animate-bounce shadow-lg" style="animation-delay: 0.2s;
+                        ">
+                        <div class="absolute -top-1 -right-1 w-6 h-6 bg-purple-500 rounded-full flex items-center justify-center animate-ping" style="animation-delay: 0.2s;">
+                            <div class="w-3 h-3 bg-purple-400 rounded-full"></div>
+                        </div>
+                    </div>
+                    <h4 class="text-xl font-bold text-gray-900 mb-2">Tushar Gupta</h4>
+                    <p class="text-purple-600 font-semibold mb-4 text-lg">Partner</p>
+                </div>
+                
+                <!-- Co-founder 3 -->
+                <div class="bg-white rounded-2xl shadow-xl p-8 card-hover border border-gray-100 text-center transform hover:scale-105 transition-all duration-300">
+                    <div class="relative w-24 h-24 mx-auto mb-6">
+                        <div class="w-24 h-24 bg-gradient-to-br from-green-500 to-teal-600 rounded-full flex items-center justify-center animate-bounce shadow-lg" style="animation-delay: 0.4s;">
+                            <svg class="w-12 h-12 text-white" fill="currentColor" viewBox="0 0 24 24">
+                                <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
+                            </svg>
+                        </div>
+                        <div class="absolute -top-1 -right-1 w-6 h-6 bg-teal-500 rounded-full flex items-center justify-center animate-ping" style="animation-delay: 0.4s;">
+                            <div class="w-3 h-3 bg-teal-400 rounded-full"></div>
+                        </div>
+                    </div>
+                    <h4 class="text-xl font-bold text-gray-900 mb-2">Coming New partner</h4>
+                    <p class="text-green-600 font-semibold mb-4 text-lg">Partner</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="py-16 px-4 sm:px-6 lg:px-8 bg-gray-50">
+        <div class="max-w-7xl mx-auto">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl md:text-4xl font-bold text-gray-900 mb-4">Get In Touch</h2>
+                <p class="text-xl text-gray-600">Ready to get started? Contact our loan specialists today.</p>
+            </div>
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12">
+                <div>
+                    <div class="bg-white rounded-xl shadow-lg p-8">
+                        <h3 class="text-2xl font-bold text-gray-900 mb-6">Contact Information</h3>
+                        <div class="space-y-6">
+                            <div class="flex items-center">
+                                <div class="bg-indigo-100 w-12 h-12 rounded-full flex items-center justify-center mr-4">
+                                    <span class="text-xl">📞</span>
+                                </div>
+                                <div>
+                                    <div class="font-semibold text-gray-900">Phone</div>
+                                    <div class="text-gray-600">+91 9310768239</div>
+                                </div>
+                            </div>
+                            <div class="flex items-center">
+                                <div class="bg-indigo-100 w-12 h-12 rounded-full flex items-center justify-center mr-4">
+                                    <span class="text-xl">✉️</span>
+                                </div>
+                                <div>
+                                    <div class="font-semibold text-gray-900">Email</div>
+                                    <div class="text-gray-600">infocredify.pyt@gmail.com</div>
+                                </div>
+                            </div>
+                            <div class="flex items-center">
+                                <div class="bg-indigo-100 w-12 h-12 rounded-full flex items-center justify-center mr-4">
+                                    <span class="text-xl">📍</span>
+                                </div>
+                                <div>
+                                    <div class="font-semibold text-gray-900">Address</div>
+                                    <div class="text-gray-600">DLF CORPORATE TOWERS, Complex Market<br>SHIVAJI MARG, Najafgarh Rd, Karampura Industrial Area<br>Delhi, India 110015</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div>
+                    <div class="bg-white rounded-xl shadow-lg p-8">
+                        <h3 class="text-2xl font-bold text-gray-900 mb-6">Send us a Message</h3>
+                       
+                        <form  id="contactForm"  class="space-y-6">
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-2">Full Name</label>
+                                <input type="text" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500" placeholder="Your full name"id="name">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-2">Email</label>
+                                <input type="email" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500" placeholder="your@email.com" id="email">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-2">Loan Type</label>
+                                <select class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500" id="loanType">
+                                    <option>Personal Loan</option>
+                                    <option>Business Loan</option>
+                                    <option>Home Loan</option>
+                                    <option>Loan Against Property</option>
+                                    <option>Used Car Loan</option>
+                                    <option>New Car Loan</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-2">Message</label>
+                                <textarea rows="4" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500" placeholder="Tell us about your loan needs..." id="message"></textarea>
+                            </div>
+                            <button type="submit" class="w-full bg-indigo-600 text-white py-3 rounded-lg hover:bg-indigo-700 transition-colors font-semibold">Send Message</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+    
+   
+
+    
+
+   
+
+  
+
+    <!-- Footer -->
+    <footer class="bg-gray-900 text-white py-12 px-4 sm:px-6 lg:px-8">
+        <div class="max-w-7xl mx-auto">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+                <div>
+                    <img src="logo-bg.png" alt="logofooter" class="footerlogo" width="28%">
+                    <p class="text-gray-400 mb-4">Powering Your Tomorrow</p>
+                    <p class="text-gray-400 text-sm">Making financial dreams accessible to everyone with transparent, fair, and competitive lending solutions.</p>
+                </div>
+                <div>
+                    <h4 class="text-lg font-semibold mb-4">Loan Products</h4>
+                    <ul class="space-y-2 text-gray-400">
+                        <li><a href="personalloanpage.html" class="hover:text-white transition-colors">Personal Loans</a></li>
+                        <li><a href="businessloanpage.html" class="hover:text-white transition-colors">Business Loans</a></li>
+                        <li><a href="homeloanpage.html" class="hover:text-white transition-colors">Home Loans</a></li>
+                        <li><a href="lappage.html" class="hover:text-white transition-colors">Loan Against Property</a></li>
+                        <li><a href="newcarloanpage.html" class="hover:text-white transition-colors">New Car Loan</a></li>
+                        <li><a href="usedcarloanpage.html" class="hover:text-white transition-colors">Used Car Loan</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="text-lg font-semibold mb-4">Company</h4>
+                    <ul class="space-y-2 text-gray-400">
+                        <li><a href="#about" class="hover:text-white transition-colors">About Us</a></li>
+                        <li><a href="career.html" class="hover:text-white transition-colors">Careers</a></li>
+                        <li><a href="#" class="hover:text-white transition-colors">Press</a></li>
+                        <li><a href="#" class="hover:text-white transition-colors">Blog</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="text-lg font-semibold mb-4">Support</h4>
+                    <ul class="space-y-2 text-gray-400">
+                        <li><a href="#" class="hover:text-white transition-colors">Help Center</a></li>
+                        <li><a href="#" class="hover:text-white transition-colors">Privacy Policy</a></li>
+                        <li><a href="#" class="hover:text-white transition-colors">Terms of Service</a></li>
+                        <li><a href="#" class="hover:text-white transition-colors">Contact Us</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="border-t border-gray-800 mt-8 pt-8 text-center text-gray-400">
+                <p>&copy; 2025 Credify. All rights reserved. | Licensed Lender | Equal Housing Opportunity</p>
+            </div>
+        </div>
+    </footer>
+
+
+    <script>
+
+        // Mobile menu toggle
+        const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+        const mobileMenu = document.getElementById('mobile-menu');
+
+        mobileMenuBtn.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+        });
+
+        // Smooth scrolling for navigation links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                    // Close mobile menu if open
+                    mobileMenu.classList.add('hidden');
+                }
+            });
+        });
+
+
+        // Apply Now button handlers
+        document.querySelectorAll('button').forEach(button => {
+            if (button.textContent.includes('Apply Now') || button.textContent.includes('Get Started')) {
+                button.addEventListener('click', function() {
+                    location.href = 'apply.html';
+                });
+            }
+        });
+        function gotopersonalloan() {
+            location.href = "personalloanpage.html";
+        }
+            function gotobusinessloan() {
+                location.href = "businessloanpage.html";
+            }
+        function gotohomeloan() {
+            location.href = "homeloanpage.html";
+        }
+          function gotousedcarloan() {
+            location.href = "usedcarloanpage.html";
+        }
+            function gotolap() {
+                location.href = "laploanpage.html";
+            }
+
+  function goToContact() {
+            // Create and show contact modal
+            const modal = document.createElement('div');
+            modal.className = 'fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50';
+            modal.innerHTML = `
+                <div class="bg-white rounded-lg shadow-xl p-8 max-w-md mx-4 transform transition-all">
+                    <div class="text-center mb-6">
+                        <div class="text-4xl mb-4">📞</div>
+                        <h2 class="text-2xl font-bold text-gray-800">Contact Us</h2>
+                    </div>
+                    
+                    <div class="space-y-4">
+                        <div class="flex items-center space-x-3">
+                            <div class="text-xl">📱</div>
+                            <div>
+                                <p class="font-semibold">Phone</p>
+                                <p class="text-gray-600">+91 9310768239,+91 9773973380</p>
+                            </div>
+                        </div>
+                        
+                        <div class="flex items-center space-x-3">
+                            <div class="text-xl">✉️</div>
+                            <div>   
+                                <p class="font-semibold">Email</p>
+                                <p class="text-gray-600">infocredify.pyt@gmail.com</p>
+                            </div>
+                        </div>
+                        
+                        <div class="flex items-center space-x-3">
+                            <div class="text-xl">🏢</div>
+                            <div>
+                                <p class="font-semibold">Office</p>
+                                <p class="text-gray-600">DLF CORPORATE TOWERS, Complex Market SHIVAJI MARG, Najafgarh Rd, Karampura Industrial Area Delhi, India 110015</p>
+                            </div>
+                        </div>
+                        
+                        <div class="flex items-center space-x-3">
+                            <div class="text-xl">⏰</div>
+                            <div>
+                                <p class="font-semibold">Working Hours</p>
+                                <p class="text-gray-600">Mon-Sat: 9:00 AM - 6:00 PM</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="mt-6 text-center">
+                        <button onclick="closeContactModal()" class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-lg font-semibold">
+                            Close
+                        </button>
+                    </div>
+                </div>
+            `;
+            
+            document.body.appendChild(modal);
+            
+            // Add click outside to close
+            modal.addEventListener('click', function(e) {
+                if (e.target === modal) {
+                    closeContactModal();
+                }
+            });
+        }
+
+
+        function closeContactModal() {
+            const modal = document.querySelector('.fixed.inset-0');
+            if (modal) {
+                modal.remove();
+            }
+        }
+
+
+    const API_BASE = "http://localhost:5000";
+
+document.getElementById("contactForm").addEventListener("submit", async (e) => {
+  e.preventDefault();
+  const data = {
+    name: document.getElementById("name").value.trim(),
+    email: document.getElementById("email").value.trim(),
+    loanType: document.getElementById("loanType").value.trim(),
+    message: document.getElementById("message").value.trim(),
+  };
+
+  try {
+    const res = await fetch(`${API_BASE}/api/contact`, {   // <-- changed
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(data),
+    });
+
+    const out = await res.json();
+    alert(out.success ? "Message sent ✅, our team will contact you soon" : (out.error || "Failed"));
+  } catch (e) {
+    console.error(e);
+    alert("Network error");
+  }
+});
+    </script>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'976da331409b1b98',t:'MTc1NjQ4NzE3MS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>

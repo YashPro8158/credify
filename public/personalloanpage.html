@@ -1,0 +1,449 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Credify - Powering Your Tomorrow</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="shortcut icon" href="logo.png" type="image/x-icon">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Inter', sans-serif; }
+        .gradient-bg { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); }
+        .card-hover { transition: transform 0.3s ease, box-shadow 0.3s ease; }
+        .card-hover:hover { transform: translateY(-5px); box-shadow: 0 20px 40px rgba(0,0,0,0.1); }
+        .animate-float { animation: float 6s ease-in-out infinite; }
+        @keyframes float { 0%, 100% { transform: translateY(0px); } 50% { transform: translateY(-20px); } }
+        
+        /* 3D Dropdown Styles */
+        .dropdown-3d {
+            perspective: 1000px;
+            transform-style: preserve-3d;
+        }
+        
+        .dropdown-menu-3d {
+            transform-origin: top center;
+            backface-visibility: hidden;
+        }
+        
+        .dropdown-open {
+            opacity: 1 !important;
+            visibility: visible !important;
+            transform: scale(1) rotateX(0deg) !important;
+        }
+        
+        .dropdown-arrow-rotate {
+            transform: rotate(180deg);
+        }
+        
+        .tool-content-show {
+            opacity: 1 !important;
+            transform: translateY(0) !important;
+        }
+          /* 3D Navigation Button Styles */
+        .nav-btn {
+            position: relative;
+            background: linear-gradient(145deg, #ffffff, #e6e6e6);
+            border: none;
+            border-radius: 12px;
+            padding: 12px 24px;
+            font-weight: 600;
+            color: #4a5568;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 
+                8px 8px 16px rgba(0, 0, 0, 0.1),
+                -8px -8px 16px rgba(255, 255, 255, 0.8),
+                inset 0 0 0 rgba(255, 255, 255, 0);
+            transform: translateZ(0);
+        }
+        
+        .nav-btn:hover {
+            transform: translateY(-3px) scale(1.05);
+            box-shadow: 
+                12px 12px 24px rgba(0, 0, 0, 0.15),
+                -12px -12px 24px rgba(255, 255, 255, 0.9),
+                inset 2px 2px 4px rgba(255, 255, 255, 0.3);
+            background: linear-gradient(145deg, #f8f9fa, #e9ecef);
+            color: #2d3748;
+        }
+        
+        .nav-btn:active {
+            transform: translateY(-1px) scale(1.02);
+            box-shadow: 
+                4px 4px 8px rgba(0, 0, 0, 0.2),
+                -4px -4px 8px rgba(255, 255, 255, 0.7),
+                inset 4px 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        
+        .nav-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            border-radius: 12px;
+            background: linear-gradient(145deg, transparent, rgba(255, 255, 255, 0.1));
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        
+        .nav-btn:hover::before {
+            opacity: 1;
+        }
+        
+        .nav-btn i {
+            margin-right: 8px;
+            font-size: 16px;
+        }
+        
+        /* Logo styling */
+        .logo {
+            background: linear-gradient(145deg, #667eea, #764ba2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            font-weight: 800;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+        }
+    </style>
+</head>
+<body>
+     <!-- Navigation Bar -->
+    <nav class="bg-white shadow-lg sticky top-0 z-50">
+        <div class="container mx-auto px-4 py-3">
+            <div class="flex items-center justify-between">
+                <!-- Logo -->
+                 <div class="flex-shrink-0 logosec" style="display: flex; align-items: center;">
+                        <img src="logo-bg.png" alt="logo" width="10%">
+                        <h1 class="text-2xl font-bold text-indigo-600">Credify</h1>
+                    </div>
+                
+                <!-- Navigation Buttons -->
+                <div class="flex items-center space-x-4">
+                    <button class="nav-btn" onclick="goToHome()">
+                        <i>🏠</i>
+                        Home
+                    </button>
+                    <button class="nav-btn" onclick="goToContact()">
+                        <i>📞</i>
+                        Contact
+                    </button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- ==================== PERSONAL LOANS PAGE START ==================== -->
+    <div id="personal-loans" class="page">
+        <!-- Hero Section -->
+        <section class="bg-gradient-to-r from-blue-600 to-purple-700 pt-20 pb-16 px-4 sm:px-6 lg:px-8">
+            <div class="max-w-7xl mx-auto">
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+                    <div class="text-white">
+                        <h1 class="text-4xl md:text-5xl font-bold mb-6">Personal Loans</h1>
+                        <p class="text-xl mb-8 text-blue-100">Flexible financing for all your personal needs. No collateral required, quick approval in 24 hours.</p>
+                        <div class="flex flex-col sm:flex-row gap-4">
+                            <button class="bg-white text-blue-600 px-8 py-4 rounded-lg font-semibold hover:bg-gray-100 transition-colors" onclick="gotoapplypage()">Apply Now</button>
+                            <button class="border-2 border-white text-white px-8 py-4 rounded-lg font-semibold hover:bg-white hover:text-blue-600 transition-colors" onclick="gotoemipage()">Calculate EMI</button>
+                        </div>
+                    </div>
+                    <div class="text-center">
+                        <div class="bg-white/10 rounded-2xl p-8 backdrop-blur-sm">
+                            <div class="text-6xl mb-4">👤</div>
+                            <h3 class="text-2xl font-bold text-white mb-4">Up to ₹50 Lakhs</h3>
+                            <p class="text-blue-100">Interest rates starting from 10.99% p.a.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Features Section -->
+        <section class="py-16 px-4 sm:px-6 lg:px-8 bg-white">
+            <div class="max-w-7xl mx-auto">
+                <div class="text-center mb-16">
+                    <h2 class="text-3xl md:text-4xl font-bold text-gray-900 mb-4">Why Choose Our Personal Loans?</h2>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                    <div class="text-center p-6">
+                        <div class="bg-blue-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
+                            <span class="text-2xl">⚡</span>
+                        </div>
+                        <h3 class="text-xl font-semibold text-gray-900 mb-2">Quick Approval</h3>
+                        <p class="text-gray-600">Get approved in just 24 hours with minimal documentation.</p>
+                    </div>
+                    <div class="text-center p-6">
+                        <div class="bg-blue-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
+                            <span class="text-2xl">🔒</span>
+                        </div>
+                        <h3 class="text-xl font-semibold text-gray-900 mb-2">No Collateral</h3>
+                        <p class="text-gray-600">Unsecured loans with no need for collateral or guarantor.</p>
+                    </div>
+                    <div class="text-center p-6">
+                        <div class="bg-blue-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
+                            <span class="text-2xl">💰</span>
+                        </div>
+                        <h3 class="text-xl font-semibold text-gray-900 mb-2">Flexible Terms</h3>
+                        <p class="text-gray-600">Repayment tenure from 12 to 60 months as per your convenience.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Loan Details -->
+        <section class="py-16 px-4 sm:px-6 lg:px-8 bg-gray-50">
+            <div class="max-w-7xl mx-auto">
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-12">
+                    <div>
+                        <h2 class="text-3xl font-bold text-gray-900 mb-8">Loan Details</h2>
+                        <div class="space-y-6">
+                            <div class="flex justify-between items-center py-4 border-b border-gray-200">
+                                <span class="font-semibold text-gray-700">Loan Amount</span>
+                                <span class="text-gray-900">₹50,000 - ₹50,00,000</span>
+                            </div>
+                            <div class="flex justify-between items-center py-4 border-b border-gray-200">
+                                <span class="font-semibold text-gray-700">Interest Rate</span>
+                                <span class="text-gray-900">10.99% - 24% p.a.</span>
+                            </div>
+                            <div class="flex justify-between items-center py-4 border-b border-gray-200">
+                                <span class="font-semibold text-gray-700">Tenure</span>
+                                <span class="text-gray-900">12 - 60 months</span>
+                            </div>
+                            <div class="flex justify-between items-center py-4 border-b border-gray-200">
+                                <span class="font-semibold text-gray-700">Processing Fee</span>
+                                <span class="text-gray-900">Up to 3% of loan amount</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div>
+                        <h2 class="text-3xl font-bold text-gray-900 mb-8">Eligibility Criteria</h2>
+                        <div class="space-y-4">
+                            <div class="flex items-center">
+                                <span class="text-green-500 mr-3">✓</span>
+                                <span class="text-gray-700">Age: 21 to 65 years</span>
+                            </div>
+                            <div class="flex items-center">
+                                <span class="text-green-500 mr-3">✓</span>
+                                <span class="text-gray-700">Minimum monthly income: ₹25,000</span>
+                            </div>
+                            <div class="flex items-center">
+                                <span class="text-green-500 mr-3">✓</span>
+                                <span class="text-gray-700">Employment: Salaried or Self-employed</span>
+                            </div>
+                            <div class="flex items-center">
+                                <span class="text-green-500 mr-3">✓</span>
+                                <span class="text-gray-700">Credit Score: 650 and above</span>
+                            </div>
+                            <div class="flex items-center">
+                                <span class="text-green-500 mr-3">✓</span>
+                                <span class="text-gray-700">Work Experience: Minimum 2 years</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- EMI Calculator -->
+        <section class="py-16 px-4 sm:px-6 lg:px-8 bg-white">
+            <div class="max-w-4xl mx-auto" id="emiCalculator">
+                <div class="text-center mb-12">
+                    <h2 class="text-3xl font-bold text-gray-900 mb-4">EMI Calculator</h2>
+                    <p class="text-gray-600">Calculate your monthly EMI instantly</p>
+                </div>
+                <div class="bg-gray-50 rounded-xl p-8">
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Loan Amount (₹)</label>
+                            <input type="range" id="loanAmount" min="50000" max="5000000" value="500000" class="w-full">
+                            <div class="text-center mt-2 font-semibold text-blue-600" id="loanAmountValue">₹5,00,000</div>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Interest Rate (%)</label>
+                            <input type="range" id="interestRate" min="10.99" max="24" value="15" step="0.1" class="w-full">
+                            <div class="text-center mt-2 font-semibold text-blue-600" id="interestRateValue">15%</div>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Tenure (Months)</label>
+                            <input type="range" id="tenure" min="12" max="60" value="36" class="w-full">
+                            <div class="text-center mt-2 font-semibold text-blue-600" id="tenureValue">36 months</div>
+                        </div>
+                    </div>
+                    <div class="text-center">
+                        <div class="bg-blue-600 text-white rounded-lg p-6 inline-block">
+                            <div class="text-sm text-blue-100 mb-2">Monthly EMI</div>
+                            <div class="text-3xl font-bold" id="emiResult">₹17,493</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Application Process -->
+        <section class="py-16 px-4 sm:px-6 lg:px-8 bg-gray-50">
+            <div class="max-w-7xl mx-auto">
+                <div class="text-center mb-16">
+                    <h2 class="text-3xl font-bold text-gray-900 mb-4">Simple Application Process</h2>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+                    <div class="text-center">
+                        <div class="bg-blue-600 text-white w-12 h-12 rounded-full flex items-center justify-center mx-auto mb-4 text-xl font-bold">1</div>
+                        <h3 class="font-semibold text-gray-900 mb-2">Apply Online</h3>
+                        <p class="text-gray-600 text-sm">Fill out our simple online application form</p>
+                    </div>
+                    <div class="text-center">
+                        <div class="bg-blue-600 text-white w-12 h-12 rounded-full flex items-center justify-center mx-auto mb-4 text-xl font-bold">2</div>
+                        <h3 class="font-semibold text-gray-900 mb-2">Document Upload</h3>
+                        <p class="text-gray-600 text-sm">Upload required documents digitally</p>
+                    </div>
+                    <div class="text-center">
+                        <div class="bg-blue-600 text-white w-12 h-12 rounded-full flex items-center justify-center mx-auto mb-4 text-xl font-bold">3</div>
+                        <h3 class="font-semibold text-gray-900 mb-2">Quick Approval</h3>
+                        <p class="text-gray-600 text-sm">Get approval within 24 hours</p>
+                    </div>
+                    <div class="text-center">
+                        <div class="bg-blue-600 text-white w-12 h-12 rounded-full flex items-center justify-center mx-auto mb-4 text-xl font-bold">4</div>
+                        <h3 class="font-semibold text-gray-900 mb-2">Fund Disbursal</h3>
+                        <p class="text-gray-600 text-sm">Receive funds directly in your account</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+    <!-- ==================== PERSONAL LOANS PAGE END ==================== -->
+
+     <!-- Footer -->
+    <footer class="bg-gray-900 text-white py-12 px-4 sm:px-6 lg:px-8">
+        <div class="max-w-7xl mx-auto">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+                <div>
+                    <img src="logo-bg.png" alt="logofooter" class="footerlogo" width="28%">
+                    <p class="text-gray-400 mb-4">Powering Your Tomorrow</p>
+                    <p class="text-gray-400 text-sm">Making financial dreams accessible to everyone with transparent, fair, and competitive lending solutions.</p>
+                </div>
+                <div>
+                    <h4 class="text-lg font-semibold mb-4">Loan Products</h4>
+                       <ul class="space-y-2 text-gray-400">
+                        <li><a href="personalloanpage.html" class="hover:text-white transition-colors">Personal Loans</a></li>
+                        <li><a href="businessloanpage.html" class="hover:text-white transition-colors">Business Loans</a></li>
+                        <li><a href="homeloanpage.html" class="hover:text-white transition-colors">Home Loans</a></li>
+                        <li><a href="lappage.html" class="hover:text-white transition-colors">Loan Against Property</a></li>
+                        <li><a href="newcarloanpage.html" class="hover:text-white transition-colors">New Car Loan</a></li>
+                        <li><a href="usedcarloanpage.html" class="hover:text-white transition-colors">Used Car Loan</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="text-lg font-semibold mb-4">Company</h4>
+                    <ul class="space-y-2 text-gray-400">
+                        <li><a href="#about" class="hover:text-white transition-colors">About Us</a></li>
+                        <li><a href="career.html" class="hover:text-white transition-colors">Careers</a></li>
+                        <li><a href="#" class="hover:text-white transition-colors">Press</a></li>
+                        <li><a href="#" class="hover:text-white transition-colors">Blog</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="text-lg font-semibold mb-4">Support</h4>
+                    <ul class="space-y-2 text-gray-400">
+                        <li><a href="#" class="hover:text-white transition-colors">Help Center</a></li>
+                        <li><a href="#" class="hover:text-white transition-colors">Privacy Policy</a></li>
+                        <li><a href="#" class="hover:text-white transition-colors">Terms of Service</a></li>
+                        <li><a href="#" class="hover:text-white transition-colors">Contact Us</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="border-t border-gray-800 mt-8 pt-8 text-center text-gray-400">
+                <p>&copy; 2025 Credify. All rights reserved. | Licensed Lender | Equal Housing Opportunity</p>
+            </div>
+        </div>
+    </footer>
+</body>
+
+<script>
+    function goToHome() {
+            // Redirect to home page
+            window.location.href = 'index.html';
+
+        }
+
+        function goToContact() {
+            // Create and show contact modal
+            const modal = document.createElement('div');
+            modal.className = 'fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50';
+            modal.innerHTML = `
+                <div class="bg-white rounded-lg shadow-xl p-8 max-w-md mx-4 transform transition-all">
+                    <div class="text-center mb-6">
+                        <div class="text-4xl mb-4">📞</div>
+                        <h2 class="text-2xl font-bold text-gray-800">Contact Us</h2>
+                    </div>
+                    
+                    <div class="space-y-4">
+                        <div class="flex items-center space-x-3">
+                            <div class="text-xl">📱</div>
+                            <div>
+                                <p class="font-semibold">Phone</p>
+                                <p class="text-gray-600">+91 93107 68239</p>
+                            </div>
+                        </div>
+                        
+                        <div class="flex items-center space-x-3">
+                            <div class="text-xl">✉️</div>
+                            <div>   
+                                <p class="font-semibold">Email</p>
+                                <p class="text-gray-600">infocredify.pyt@gmail.com</p>
+                            </div>
+                        </div>
+                        
+                        <div class="flex items-center space-x-3">
+                            <div class="text-xl">🏢</div>
+                            <div>
+                                <p class="font-semibold">Office</p>
+                                <p class="text-gray-600">DLF CORPORATE TOWERS, Complex Market SHIVAJI MARG, Najafgarh Rd, Karampura Industrial Area Delhi, India 110015</p>
+                            </div>
+                        </div>
+                        
+                        <div class="flex items-center space-x-3">
+                            <div class="text-xl">⏰</div>
+                            <div>
+                                <p class="font-semibold">Working Hours</p>
+                                <p class="text-gray-600">Mon-Sat: 9:00 AM - 6:00 PM</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="mt-6 text-center">
+                        <button onclick="closeContactModal()" class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-lg font-semibold">
+                            Close
+                        </button>
+                    </div>
+                </div>
+            `;
+            
+            document.body.appendChild(modal);
+            
+            // Add click outside to close
+            modal.addEventListener('click', function(e) {
+                if (e.target === modal) {
+                    closeContactModal();
+                }
+            });
+        }
+
+        function closeContactModal() {  
+            const modal = document.querySelector('.fixed.inset-0');
+            if (modal) {
+                modal.remove();
+            }
+        }
+function gotoemipage() {
+    location.href = "#emiCalculator";
+}
+        function gotoapplypage() {
+    location.href = "apply.html";
+}
+
+</script>
+    <script src="pagesscript.js"></script>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'976da331409b1b98',t:'MTc1NjQ4NzE3MS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>
