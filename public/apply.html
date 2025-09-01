@@ -532,19 +532,29 @@
 async function submitApplication() {
     const referenceId = 'LN' + Date.now().toString().slice(-8) + Math.floor(Math.random() * 100);
 
+    // Map loan type codes to readable names
+    const loanTypeNames = {
+        'personal': 'Personal Loan',
+        'business': 'Business Loan',
+        'home': 'Home Loan',
+        'lap': 'Loan Against Property (LAP)',
+        'used-car': 'Used Car Loan',
+        'new-car': 'New Car Loan',
+        'rto-insurance': 'RTO Insurance'
+    };
+
     const data = {
         referenceId,
-        loanType: selectedLoanType,
-        fullName: document.getElementById('fullName').value,
-        mobile: document.getElementById('mobile').value,
-        email: document.getElementById('email').value,
+        loanType: loanTypeNames[selectedLoanType] || selectedLoanType, // ✅ readable name bhejna
+        fullName: document.getElementById('fullName').value.trim(),
+        mobile: document.getElementById('mobile').value.trim(),
+        email: document.getElementById('email').value.trim(),
         dob: document.getElementById('dob').value,
         income: document.getElementById('income').value,
         employment: document.getElementById('employment').value,
         loanAmount: document.getElementById('loanAmount').value,
-        city: document.getElementById('city').value,
+        city: document.getElementById('city').value.trim(),
     };
-;
 
     try {
         const res = await fetch(`https://credifybackend-production.up.railway.app/api/apply`, {
@@ -568,6 +578,7 @@ async function submitApplication() {
         alert("Network error while submitting application");
     }
 }
+
 
         function startNewApplication() {
             // Reset form
